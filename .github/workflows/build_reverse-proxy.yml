@@ -30,6 +30,6 @@ jobs:
           file: reverse-proxy/dockerfile
           push: true
           tags: |
-            ghcr.io/calfur/reverse-proxy:${{ github.sha }}
-            ghcr.io/calfur/reverse-proxy:latest
+            ghcr.io/calfur/calfur-dev/reverse-proxy:${{ github.sha }}
+            ghcr.io/calfur/calfur-dev/reverse-proxy:latest
           platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v8
