@@ -1,0 +1,37 @@
+services:
+  reverse-proxy:
+    image: ghcr.io/calfur/reverse-proxy:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    ports:
+      - "443:443"
+    networks:
+      - webnet
+    depends_on:
+      - certbot
+      - certbot_init
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --post-hook "nginx -s reload"; sleep 12h; done'
+
+  certbot_init:
+    image: certbot/certbot
+    container_name: certbot_init
+    depends_on:
+      - nginx
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
+    entrypoint: /bin/sh -c 'if [ ! -f /etc/letsencrypt/live/calfur.dev/fullchain.pem ]; then certbot certonly --webroot -w /var/www/certbot --email robin.nater@hotmail.com --agree-tos --no-eff-email -d calfur.dev -d *.calfur.dev; fi'
+
+networks:
+  default:
+    external:
+      name: webnet
