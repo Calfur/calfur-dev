@@ -7,7 +7,6 @@ services:
       - ./certbot/www:/var/www/certbot/:ro
     ports:
       - "443:443"
-      - "80:80"
     restart: always
     networks:
       - webnet
@@ -18,7 +17,7 @@ services:
     volumes:
       - ./certbot/conf:/etc/ssl/:rw
       - ./certbot/www:/var/www/certbot/:rw
-    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --post-hook "docker exec reverse-proxy nginx -s reload"; sleep 12h; done'
+    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --post-hook "echo reload nginx here"; sleep 12h; done'
     depends_on:
       - reverse-proxy
 
@@ -28,7 +27,9 @@ services:
     volumes:
       - ./certbot/conf:/etc/ssl/:rw
       - ./certbot/www:/var/www/certbot/:rw
-    entrypoint: /bin/sh -c 'if [ ! -f /etc/ssl/live/calfur.dev/fullchain.pem ]; then certbot certonly --webroot --webroot-path /var/www/certbot/ -d calfur.dev -d *.calfur.dev --post-hook "docker exec reverse-proxy nginx -s reload"; fi'
+    entrypoint: /bin/sh -c 'if [ ! -f /etc/ssl/live/calfur.dev/fullchain.pem ]; then certbot certonly --webroot --webroot-path /var/www/certbot/ -d calfur.dev -d *.calfur.dev --post-hook "echo reload nginx here"; fi'
+    ports:
+      - "80:80"
     depends_on:
       - reverse-proxy
 
