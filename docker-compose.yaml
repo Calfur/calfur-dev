@@ -2,17 +2,17 @@ services:
   reverse-proxy:
     image: traefik:v3.0
     container_name: reverse-proxy
-    command: 
-      - "--api.insecure=true" # Dashboard settings, remove for production
+    command:
       - "--providers.docker=true"
+      - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.defaultresolver.acme.httpchallenge=true"
-      - "--certificatesresolvers.defaultresolver.acme.httpchallenge.entrypoint=websecure"
+      - "--certificatesresolvers.defaultresolver.acme.httpchallenge.entrypoint=web"
       - "--certificatesresolvers.defaultresolver.acme.email=robin.nater@hotmail.com"
       - "--certificatesresolvers.defaultresolver.acme.storage=/letsencrypt/acme.json"
     ports:
+      - "80:80"
       - "443:443"
-      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /letsencrypt:/letsencrypt
