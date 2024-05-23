@@ -1,38 +1,26 @@
 services:
   reverse-proxy:
-    image: ghcr.io/calfur/calfur-dev/reverse-proxy:latest
+    image: traefik:v3.0
     container_name: reverse-proxy
-    volumes:
-      - ./certbot/conf:/etc/ssl/:ro
-      - ./certbot/www:/var/www/certbot/:ro
+    command: 
+      - "--api.insecure=true" # Dashboard settings, remove for production
+      - "--providers.docker=true"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.defaultresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.defaultresolver.acme.httpchallenge.entrypoint=websecure"
+      - "--certificatesresolvers.defaultresolver.acme.email=robin.nater@hotmail.com"
+      - "--certificatesresolvers.defaultresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "443:443"
-    restart: always
-    networks:
-      - webnet
-
-  certbot:
-    image: certbot/certbot:latest
-    container_name: certbot
+      - "8080:8080"
     volumes:
-      - ./certbot/conf:/etc/ssl/:rw
-      - ./certbot/www:/var/www/certbot/:rw
-    entrypoint: /bin/sh -c 'trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --post-hook "echo reload nginx here"; sleep 12h; done'
-    depends_on:
-      - reverse-proxy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /letsencrypt:/letsencrypt
 
-  certbot-init:
-    image: certbot/certbot:latest
-    container_name: certbot-init
-    volumes:
-      - ./certbot/conf:/etc/ssl/:rw
-      - ./certbot/www:/var/www/certbot/:rw
-    entrypoint: /bin/sh -c 'if [ ! -f /etc/ssl/live/calfur.dev/fullchain.pem ]; then certbot certonly --webroot --webroot-path /var/www/certbot/ -d calfur.dev -d *.calfur.dev --post-hook "echo reload nginx here"; fi'
-    ports:
-      - "80:80"
-    depends_on:
-      - reverse-proxy
-
-networks:
-  webnet:
-    external: true
+  pannenstreifen-website:
+    image: ghcr.io/calfur/pannenstreifen-website:latest
+    container_name: pannenstreifen-website
+    labels:
+      - "traefik.http.routers.pannenstreifen-website.rule=Host(`pannenstreifen.calfur.dev`)"
+      - "traefik.http.routers.pannenstreifen-website.entrypoints=websecure"
+      - "traefik.http.routers.pannenstreifen-website.tls.certresolver=defaultresolver"
