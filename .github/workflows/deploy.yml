@@ -21,8 +21,11 @@ jobs:
 
     - name: Apply Kubernetes manifests
       run: |
-        kubectl apply -f kubernetes/traefik-deployment.yaml
-        kubectl apply -f kubernetes/traefik-service.yaml
-        kubectl apply -f kubernetes/pannenstreifen-website-deployment.yaml
-        kubectl apply -f kubernetes/pannenstreifen-website-service.yaml
-        kubectl apply -f kubernetes/pannenstreifen-website-ingress.yaml
+        kubectl apply -f kubernetes/00-account.yml
+        kubectl apply -f kubernetes/00-role.yml
+        kubectl apply -f kubernetes/01-role-binding.yml
+        kubectl apply -f kubernetes/02-traefik-deployment.yml
+        kubectl apply -f kubernetes/02-traefik-service.yml
+        kubectl apply -f kubernetes/03-pannenstreifen-website-deployment.yml
+        kubectl apply -f kubernetes/03-pannenstreifen-website-ingress.yml
+        kubeclt apply -f kubernetes/03-pannenstreifen-website-service.yml

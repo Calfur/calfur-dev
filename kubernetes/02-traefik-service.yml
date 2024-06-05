@@ -3,15 +3,15 @@ kind: Service
 metadata:
   name: reverse-proxy
 spec:
+  type: LoadBalancer
   selector:
     app: reverse-proxy
   ports:
-    - name: http
+    - name: web
       protocol: TCP
       port: 80
       targetPort: 80
-    - name: https
+    - name: websecure
       protocol: TCP
       port: 443
       targetPort: 443
-  type: LoadBalancer
