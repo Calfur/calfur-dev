@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pannenstreifen-website
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pannenstreifen-website
+  template:
+    metadata:
+      labels:
+        app: pannenstreifen-website
+    spec:
+      containers:
+      - name: pannenstreifen-website
+        image: ghcr.io/calfur/pannenstreifen-website:85a700a09f1ef8e849bfd6b1b54f17893538171c
+        ports:
+          - containerPort: 80
