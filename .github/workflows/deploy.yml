@@ -27,5 +27,5 @@ jobs:
         kubectl apply -f kubernetes/02-traefik-deployment.yml
         kubectl apply -f kubernetes/02-traefik-service.yml
         kubectl apply -f kubernetes/03-pannenstreifen-website-deployment.yml
-        kubectl apply -f kubernetes/03-pannenstreifen-website-ingress.yml
         kubectl apply -f kubernetes/03-pannenstreifen-website-service.yml
+        kubectl apply -f kubernetes/04-pannenstreifen-website-ingress.yml
