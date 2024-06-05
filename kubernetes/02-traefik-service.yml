@@ -5,13 +5,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: reverse-proxy
+    app: traefik
   ports:
-    - name: web
-      protocol: TCP
-      port: 80
-      targetPort: 80
-    - name: websecure
-      protocol: TCP
+    - targetPort: websecure
       port: 443
-      targetPort: 443
