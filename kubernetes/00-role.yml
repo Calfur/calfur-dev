@@ -31,3 +31,11 @@ rules:
       - ingresses/status
     verbs:
       - update
+  - apiGroups:
+      - traefik.io
+    resources:
+      - serverstransporttcps
+    verbs:
+      - get
+      - list
+      - watch
