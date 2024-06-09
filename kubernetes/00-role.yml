@@ -35,6 +35,15 @@ rules:
       - traefik.io
     resources:
       - serverstransporttcps
+      - serverstransports
+      - middlewaretcps
+      - ingressroutetcps
+      - tlsstores
+      - traefikservices
+      - ingressrouteudps
+      - tlsoptions
+      - middlewares
+      - ingressroutes
     verbs:
       - get
       - list
