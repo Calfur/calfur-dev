@@ -14,18 +14,28 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4
 
-    - name: Set up K8s context
-      run: |
-        mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+    - name: Copy Kubernetes manifests to the server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "./kubernetes/*"
+        target: "/opt/k8s-scripts/"
 
-    - name: Apply Kubernetes manifests
-      run: |
-        kubectl apply -f kubernetes/00-account.yml
-        kubectl apply -f kubernetes/00-role.yml
-        kubectl apply -f kubernetes/01-role-binding.yml
-        kubectl apply -f kubernetes/02-traefik-deployment.yml
-        kubectl apply -f kubernetes/02-traefik-service.yml
-        kubectl apply -f kubernetes/03-pannenstreifen-website-deployment.yml
-        kubectl apply -f kubernetes/03-pannenstreifen-website-service.yml
-        kubectl apply -f kubernetes/04-pannenstreifen-website-ingress.yml
+    - name: Apply Kubernetes manifests on the server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          kubectl apply -f k8s-scripts/00-account.yml
+          kubectl apply -f k8s-scripts/00-role.yml
+          kubectl apply -f k8s-scripts/01-role-binding.yml
+          kubectl apply -f k8s-scripts/02-traefik-deployment.yml
+          kubectl apply -f k8s-scripts/02-traefik-service.yml
+          kubectl apply -f k8s-scripts/03-pannenstreifen-website-deployment.yml
+          kubectl apply -f k8s-scripts/03-pannenstreifen-website-service.yml
+          kubectl apply -f k8s-scripts/04-pannenstreifen-website-ingress.yml
+          rm -rf /opt/k8s-scripts/
