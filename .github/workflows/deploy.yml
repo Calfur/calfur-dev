@@ -21,7 +21,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./kubernetes/*"
-        target: "/opt/k8s-scripts/"
+        target: "/opt/GitHubAction/"
 
     - name: Apply Kubernetes manifests on the server
       uses: appleboy/ssh-action@v1.0.3
@@ -31,12 +31,12 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           set -e
-          kubectl apply -f /opt/k8s-scripts/00-account.yml
-          kubectl apply -f /opt/k8s-scripts/00-role.yml
-          kubectl apply -f /opt/k8s-scripts/01-role-binding.yml
-          kubectl apply -f /opt/k8s-scripts/02-traefik-deployment.yml
-          kubectl apply -f /opt/k8s-scripts/02-traefik-service.yml
-          kubectl apply -f /opt/k8s-scripts/03-pannenstreifen-website-deployment.yml
-          kubectl apply -f /opt/k8s-scripts/03-pannenstreifen-website-service.yml
-          kubectl apply -f /opt/k8s-scripts/04-pannenstreifen-website-ingress.yml
-          rm -rf /opt/k8s-scripts/
+          kubectl apply -f /opt/GitHubAction/kubernetes/00-account.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/00-role.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/01-role-binding.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-deployment.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-service.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-deployment.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-service.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/04-pannenstreifen-website-ingress.yml
+          rm -rf /opt/GitHubAction/
