@@ -20,23 +20,20 @@ spec:
         - name: traefik
           image: traefik:v3.0
           args:
-            - "--providers.kubernetescrd"
-            - "--providers.kubernetesingress"
-            - "--entrypoints.web.address=:80"
-            - "--entrypoints.websecure.address=:443"
-            - "--entrypoints.traefik.address=:8080"
-            - "--api.dashboard=true"
+            - --api.insecure
+            - --accesslog
+            - --entryPoints.web.Address=:8000
+            - --entryPoints.websecure.Address=:4443
+            - --providers.kubernetescrd
             - "--certificatesresolvers.defaultresolver.acme.httpchallenge=true"
-            - "--certificatesresolvers.defaultresolver.acme.httpchallenge.entrypoint=traefik"
+            - "--certificatesresolvers.defaultresolver.acme.httpchallenge.entrypoint=web"
             - "--certificatesresolvers.defaultresolver.acme.email=robin.nater@hotmail.com"
             - "--certificatesresolvers.defaultresolver.acme.storage=/letsencrypt/acme.json"
           ports:
             - name: web
-              containerPort: 80
+              containerPort: 8000
             - name: websecure
-              containerPort: 443
-            - name: traefik
-              containerPort: 8080
+              containerPort: 4443
           volumeMounts:
             - name: docker-sock
               mountPath: /var/run/docker.sock
