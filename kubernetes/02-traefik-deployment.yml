@@ -27,7 +27,7 @@ spec:
             - "--entrypoints.traefik.address=:8080"
             - "--api.dashboard=true"
             - "--certificatesresolvers.defaultresolver.acme.httpchallenge=true"
-            - "--certificatesresolvers.defaultresolver.acme.httpchallenge.entrypoint=web"
+            - "--certificatesresolvers.defaultresolver.acme.httpchallenge.entrypoint=traefik"
             - "--certificatesresolvers.defaultresolver.acme.email=robin.nater@hotmail.com"
             - "--certificatesresolvers.defaultresolver.acme.storage=/letsencrypt/acme.json"
           ports:
