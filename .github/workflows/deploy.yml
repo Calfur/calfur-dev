@@ -31,13 +31,13 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           set -e
-          docker-compose -f /opt/GitHubAction/kubernetes/k3s.yml up -d
-          kubectl apply -f /opt/GitHubAction/kubernetes/00-account.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/00-role.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/01-role-binding.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-deployment.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-service.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-deployment.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-service.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/04-pannenstreifen-website-ingress.yml
+          docker-compose -f /opt/GitHubAction/k3s.yml up -d
+          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/00-account.yml
+          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/00-role.yml
+          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/01-role-binding.yml
+          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-deployment.yml
+          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-service.yml
+          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-deployment.yml
+          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-service.yml
+          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/04-pannenstreifen-website-ingress.yml
           rm -rf /opt/GitHubAction/
