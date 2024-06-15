@@ -31,7 +31,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           set -e
-          docker-compose -f /opt/GitHubAction/kubernetes/k3s.yml up
+          docker-compose -f /opt/GitHubAction/kubernetes/k3s.yml up -d
           kubectl apply -f /opt/GitHubAction/kubernetes/00-account.yml
           kubectl apply -f /opt/GitHubAction/kubernetes/00-role.yml
           kubectl apply -f /opt/GitHubAction/kubernetes/01-role-binding.yml
