@@ -13,4 +13,4 @@ spec:
     - name: pannenstreifen-website
       port: 80
   tls:
-    certResolver: defaultresolver
+    certResolver: myresolver

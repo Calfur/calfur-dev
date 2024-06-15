@@ -1,9 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: default
   name: pannenstreifen-website
+  labels:
+    app: pannenstreifen-website
+
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: pannenstreifen-website
