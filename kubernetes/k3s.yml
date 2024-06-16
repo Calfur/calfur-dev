@@ -10,6 +10,7 @@ services:
     volumes:
       - /opt/k3s-configs/out:/output
       - /opt/k3s-configs/in:/var/lib/rancher/k3s/server/manifests
+      - /opt/GitHubAction/kubernetes:/kubernetes-configs
     ports:
       - 6443:6443
 

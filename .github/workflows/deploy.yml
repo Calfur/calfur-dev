@@ -33,12 +33,12 @@ jobs:
           set -e
           docker-compose -f /opt/GitHubAction/kubernetes/k3s.yml up -d
           ls
-          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/00-account.yml
-          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/00-role.yml
-          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/01-role-binding.yml
-          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-deployment.yml
-          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-service.yml
-          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-deployment.yml
-          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-service.yml
-          docker exec k3s_server kubectl apply -f /opt/GitHubAction/kubernetes/04-pannenstreifen-website-ingress.yml
+          docker exec k3s_server kubectl apply -f /kubernetes-configs/00-account.yml
+          docker exec k3s_server kubectl apply -f /kubernetes-configs/00-role.yml
+          docker exec k3s_server kubectl apply -f /kubernetes-configs/01-role-binding.yml
+          docker exec k3s_server kubectl apply -f /kubernetes-configs/02-traefik-deployment.yml
+          docker exec k3s_server kubectl apply -f /kubernetes-configs/02-traefik-service.yml
+          docker exec k3s_server kubectl apply -f /kubernetes-configs/03-pannenstreifen-website-deployment.yml
+          docker exec k3s_server kubectl apply -f /kubernetes-configs/03-pannenstreifen-website-service.yml
+          docker exec k3s_server kubectl apply -f /kubernetes-configs/04-pannenstreifen-website-ingress.yml
           rm -rf /opt/GitHubAction/
