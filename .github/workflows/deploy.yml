@@ -33,6 +33,7 @@ jobs:
           set -e
           kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
           kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-rbac.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/00-account.yml
           kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-service.yml
           kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-deployment.yml
           kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-service.yml
