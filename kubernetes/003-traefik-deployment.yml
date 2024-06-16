@@ -27,7 +27,15 @@ spec:
             - --providers.kubernetescrd
             - --certificatesresolvers.myresolver.acme.tlschallenge
             - --certificatesresolvers.myresolver.acme.email=robin.nater@hotmail.com
-            - --certificatesresolvers.myresolver.acme.storage=acme.json
+            - --certificatesresolvers.myresolver.acme.storage=/certs/acme.json
           ports:
             - name: websecure
               containerPort: 4443
+          volumeMounts:
+            - name: traefik-certificates
+              mountPath: /certs
+              subPath: acme.json
+      volumes:
+        - name: traefik-certificates
+          secret:
+            secretName: traefik-certificates
