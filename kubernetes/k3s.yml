@@ -1,5 +1,5 @@
 services:
-  server:
+  k3s_server:
     image: rancher/k3s:v1.17.2-k3s1
     container_name: k3s_server
     command: server --disable-agent --no-deploy traefik
@@ -14,7 +14,7 @@ services:
     ports:
       - 6443:6443
 
-  node:
+  k3s_node:
     image: rancher/k3s:v1.17.2-k3s1
     container_name: k3s_node
     privileged: true
