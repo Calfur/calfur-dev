@@ -12,7 +12,7 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik" sh -s
 
 ### Modify K3s settings (add lines)
 
-/etc/rancher/k3s/config.yaml
+/etc/rancher/k3s/k3s.yaml
 
 ```yaml
 write-kubeconfig-mode: "0666"

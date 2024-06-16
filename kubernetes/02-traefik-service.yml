@@ -5,15 +5,19 @@ metadata:
   name: traefik
 
 spec:
+  type: LoadBalancer
   ports:
     - protocol: TCP
       name: web
       port: 8000
+      targetPort: 8000
     - protocol: TCP
       name: admin
       port: 8080
+      targetPort: 8080
     - protocol: TCP
       name: websecure
       port: 4443
+      targetPort: 4443
   selector:
     app: traefik
