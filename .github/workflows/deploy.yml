@@ -31,17 +31,11 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           set -e
-          docker-compose -f /opt/GitHubAction/kubernetes/k3s.yml up -d
-          echo "Waiting for Kubernetes API server to be ready..."
-          while ! docker exec k3s_server kubectl get nodes; do
-            sleep 2
-          done
-          echo "Kubernetes API server is ready."
-          docker exec k3s_server kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
-          docker exec k3s_server kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-rbac.yml
-          docker exec k3s_server kubectl apply -f /kubernetes-configs/02-traefik-service.yml
-          docker exec k3s_server kubectl apply -f /kubernetes-configs/02-traefik-deployment.yml
-          docker exec k3s_server kubectl apply -f /kubernetes-configs/03-pannenstreifen-website-service.yml
-          docker exec k3s_server kubectl apply -f /kubernetes-configs/03-pannenstreifen-website-deployment.yml
-          docker exec k3s_server kubectl apply -f /kubernetes-configs/04-pannenstreifen-website-ingress.yml
+          kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
+          kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-rbac.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-service.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/02-traefik-deployment.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-service.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/03-pannenstreifen-website-deployment.yml
+          kubectl apply -f /opt/GitHubAction/kubernetes/04-pannenstreifen-website-ingress.yml
           rm -rf /opt/GitHubAction/
