@@ -31,13 +31,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           set -e
-          kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yml
-          kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v3.0/docs/content/reference/dynamic-configuration/kubernetes-crd-rbac.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/000-volumes.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/001-account.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/002-traefik-service.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/003-traefik-deployment.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/011-pannenstreifen-website-service.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/012-pannenstreifen-website-deployment.yml
-          kubectl apply -f /opt/GitHubAction/kubernetes/013-pannenstreifen-website-ingress.yml
+          kubectl apply -k /opt/GitHubAction/kubernetes/traefik
+          # kubectl apply -k /opt/GitHubAction/kubernetes/pannenstreifen-website
+          kubectl apply -k /opt/GitHubAction/kubernetes/q-swiper
           rm -rf /opt/GitHubAction/

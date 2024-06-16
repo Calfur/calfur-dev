@@ -1,0 +1,7 @@
+resources:
+  - ./external/kubernetes-crd-definition-v1.yml
+  - ./external/kubernetes-crd-rbac.yml
+  - 00-volumes.yml
+  - 01-account.yml
+  - 02-service.yml
+  - 03-deployment.yml

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: q-swiper
+  labels:
+    app: q-swiper
+
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: q-swiper
+  template:
+    metadata:
+      labels:
+        app: q-swiper
+    spec:
+      containers:
+        - name: q-swiper
+          image: ghcr.io/calfur/pannenstreifen-website:85a700a09f1ef8e849bfd6b1b54f17893538171c
+          ports:
+            - name: web
+              containerPort: 80
