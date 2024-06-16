@@ -22,7 +22,7 @@ Make sure the secrets SERVER_IP, SERVER_USER and SSH_PRIVATE_KEY are configured 
 
 ### Enable temporary port forwarding to create the first https certificate
 
-kubectl port-forward --address 0.0.0.0 service/traefik 443:4443 -n default
+kubectl port-forward --address 0.0.0.0 service/traefik 443:443 -n default
 
 ### How to uninstall K3s
 
