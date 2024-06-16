@@ -19,9 +19,9 @@ services:
     container_name: k3s_node
     privileged: true
     links:
-      - server
+      - k3s_server
     environment:
-      - K3S_URL=https://server:6443
+      - K3S_URL=https://k3s_server:6443
       - K3S_CLUSTER_SECRET=wernds4kjopfHHemkIDPOnwlLOpiksn
     volumes:
       - /opt/k3s-configs/custom-image:/var/lib/rancher/k3s/agent/images
