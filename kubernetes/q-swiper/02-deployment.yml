@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: q-swiper
-          image: ghcr.io/q-swiper/map-generator:
+          image: ghcr.io/q-swiper/map-generator:6cce42a2d2f0545f3933f6e0dbce2f6a8636db8f
           ports:
             - name: web
               containerPort: 80
