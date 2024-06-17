@@ -1,0 +1,29 @@
+name: Update Image Version
+
+on:
+  repository_dispatch:
+    types: [new-q-swiper-image]
+
+env:
+  IMAGE_VERSION: ${{ github.event.client_payload.imageVersion }}
+  FILE: ./kubernetes/q-swiper/02-deployment.yml
+
+jobs:
+  update-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+  
+      - name: Update Image Version
+        run: |
+          IMAGE_VERSION="${{ env.IMAGE_VERSION }}"
+          FILE="${{ env.FILE }}"
+          sed -i "s|ghcr.io/q-swiper/map-generator:.*|ghcr.io/q-swiper/map-generator:${NEW_IMAGE_VERSION}|g" $FILE
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "Update q-swiper image version to ${{ env.IMAGE_VERSION }}"
+          add: ${{ env.FILE }}
