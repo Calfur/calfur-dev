@@ -14,12 +14,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-  
+
       - name: Update Image Version
         run: |
-          IMAGE_VERSION="${{ env.IMAGE_VERSION }}"
-          FILE="${{ env.FILE }}"
-          sed -i "s|ghcr.io/q-swiper/map-generator:.*|ghcr.io/q-swiper/map-generator:${NEW_IMAGE_VERSION}|g" $FILE
+          sed -i "s|ghcr.io/q-swiper/map-generator:.*|ghcr.io/q-swiper/map-generator:${{ env.IMAGE_VERSION }}|g" ${{ env.FILE }}
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -27,3 +25,8 @@ jobs:
           default_author: github_actions
           message: "Update q-swiper image version to ${{ env.IMAGE_VERSION }}"
           add: ${{ env.FILE }}
+      
+      - name: Trigger deployment pipeline
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: deploy
