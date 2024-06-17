@@ -5,7 +5,7 @@ on:
     types: [new-q-swiper-image]
 
 env:
-  IMAGE_VERSION: ${{ github.event.client_payload.imageVersion }}
+  IMAGE_VERSION: ${{ github.event.client_payload.image_version }}
   FILE: ./kubernetes/q-swiper/02-deployment.yml
 
 jobs:
