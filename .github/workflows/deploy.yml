@@ -34,7 +34,7 @@ jobs:
         script: |
           set -e
           kubectl apply -k /opt/GitHubAction/kubernetes/traefik
-          kubectl apply -k /opt/GitHubAction/kubernetes/pannenstreifen-website
+          kubectl apply -k /opt/GitHubAction/kubernetes/pannenstreifen
           kubectl create secret docker-registry ghcr-secret-q-swiper \
             --docker-server=ghcr.io \
             --docker-username=${{ github.actor }} \
