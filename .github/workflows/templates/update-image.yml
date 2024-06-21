@@ -1,0 +1,37 @@
+name: Update Image Version
+
+on:
+  workflow_call:
+    inputs:
+      image_version:
+        required: true
+        type: string
+      image_name:
+        required: true
+        type: string
+      file_path:
+        required: true
+        type: string
+
+jobs:
+  update-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Update Image Version
+        run: |
+          sed -i "s|ghcr.io/.*/.*:.*|${{ inputs.image_name }}:${{ inputs.image_version }}|g" ${{ inputs.file_path }}
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "Update image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}"
+          add: ${{ inputs.file_path }}
+      
+      - name: Trigger deployment pipeline
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: deploy

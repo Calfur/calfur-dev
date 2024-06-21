@@ -1,13 +1,13 @@
-name: Update Q-Swiper Image
+name: Update Balloon Race Image
 
 on:
   repository_dispatch:
-    types: [new-q-swiper-image]
+    types: [new-balloon-race-image]
 
 jobs:
   call-template:
     uses: ./.github/workflows/templates/update-image.yml
     with:
       image_version: ${{ github.event.client_payload.image_version }}
-      image_name: ghcr.io/q-swiper/map-generator
-      file_path: ./kubernetes/q-swiper/02-deployment.yml
+      image_name: ghcr.io/calfur/balloon-race
+      file_path: ./kubernetes/balloon-race/02-deployment.yml

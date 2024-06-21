@@ -1,0 +1,13 @@
+name: Update Pannenstreifen Image
+
+on:
+  repository_dispatch:
+    types: [new-pannenstreifen-website-image]
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/templates/update-image.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/calfur/pannenstreifen-website
+      file_path: ./kubernetes/pannenstreifen/02-deployment.yml
