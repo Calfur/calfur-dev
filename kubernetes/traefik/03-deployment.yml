@@ -26,7 +26,7 @@ spec:
             - --entryPoints.websecure.Address=:4443
             - --providers.kubernetescrd
             - --certificatesresolvers.myresolver.acme.tlschallenge
-            - --certificatesresolvers.myresolver.acme.email=robin.nater@hotmail.com
+            - --certificatesresolvers.myresolver.acme.email=$(TRAEFIK_ACME_EMAIL)
             - --certificatesresolvers.myresolver.acme.storage=/data/acme.json
           ports:
             - name: websecure
@@ -34,6 +34,12 @@ spec:
           volumeMounts:
             - name: traefik-storage
               mountPath: /data
+          env:
+            - name: TRAEFIK_ACME_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: traefik-acme-email
+                  key: email
       volumes:
         - name: traefik-storage
           persistentVolumeClaim:

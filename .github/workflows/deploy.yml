@@ -8,6 +8,9 @@ on:
   repository_dispatch:
     types: [deploy]
 
+env:
+  DEPLOY_PATH: /opt/GitHubAction/
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,7 +26,7 @@ jobs:
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "./kubernetes/*"
-        target: "/opt/GitHubAction/"
+        target: "${{ env.DEPLOY_PATH }}"
 
     - name: Apply Kubernetes manifests on the server
       uses: appleboy/ssh-action@v1.0.3
@@ -34,22 +37,24 @@ jobs:
         script: |
           set -e
 
-          echo "::group::Creating Docker registry secret"
+          echo "Creating Docker registry secret"
           kubectl create secret docker-registry ghcr-secret-q-swiper \
             --docker-server=ghcr.io \
-            --docker-username=${GITHUB_ACTOR} \
-            --docker-password=${GH_PAT_PACKAGES_READ} \
-            --docker-email=robin.nater@hotmail.com \
+            --docker-username=${{ github.actor }} \
+            --docker-password=${{ secrets.GH_PAT_PACKAGES_READ }} \
+            --docker-email=${{ secrets.EMAIL }} \
             --dry-run=client -o yaml | kubectl apply -f -
-          echo "::endgroup::"
 
-          echo "::group::Applying Kubernetes manifests"
-          kubectl apply -k /opt/GitHubAction/kubernetes/traefik
-          kubectl apply -k /opt/GitHubAction/kubernetes/pannenstreifen
-          kubectl apply -k /opt/GitHubAction/kubernetes/q-swiper
-          kubectl apply -k /opt/GitHubAction/kubernetes/balloon
-          echo "::endgroup::"
+          echo "Creating Traefik email secret"
+          kubectl create secret generic traefik-acme-email \
+            --from-literal=email=${{ secrets.EMAIL }} \
+            --dry-run=client -o yaml | kubectl apply -f -
 
-          echo "::group::Cleaning up"
-          rm -rf /opt/GitHubAction/
-          echo "::endgroup::"
+          echo "Applying Kubernetes manifests"
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/traefik
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/pannenstreifen
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/q-swiper
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/balloon
+
+          echo "Cleaning up"
+          rm -rf ${{ env.DEPLOY_PATH }}
