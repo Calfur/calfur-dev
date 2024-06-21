@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: balloon-race
-          image: ghcr.io/calfur/balloon-race:411a22af25138625d8e5c49be8887aed58080410
+          image: ghcr.io/calfur/balloon-race:1f02b751ec2fb420ffe95057547eaa499d7457b1
           ports:
             - name: web
               containerPort: 80
