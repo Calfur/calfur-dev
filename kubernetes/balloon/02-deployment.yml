@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: balloon-race
+  labels:
+    app: balloon-race
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: balloon-race
+  template:
+    metadata:
+      labels:
+        app: balloon-race
+    spec:
+      containers:
+        - name: balloon-race
+          image: ghcr.io/calfur/balloon-race:411a22af25138625d8e5c49be8887aed58080410
+          ports:
+            - name: web
+              containerPort: 80
