@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host(`balloon.calfur.dev`)
+  - match: Host(`balloon-race.calfur.dev`)
     kind: Rule
     services:
     - name: balloon-race
