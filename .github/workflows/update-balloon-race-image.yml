@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-template:
-    uses: ./.github/workflows/templates/update-image.yml
+    uses: ./.github/workflows/update-image-template.yml
     with:
       image_version: ${{ github.event.client_payload.image_version }}
       image_name: ghcr.io/calfur/balloon-race
