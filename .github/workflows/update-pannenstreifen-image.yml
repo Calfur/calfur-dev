@@ -11,3 +11,4 @@ jobs:
       image_version: ${{ github.event.client_payload.image_version }}
       image_name: ghcr.io/calfur/pannenstreifen-website
       file_path: ./kubernetes/pannenstreifen/02-deployment.yml
+      trigger_deploy: true

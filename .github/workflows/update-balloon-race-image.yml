@@ -11,3 +11,4 @@ jobs:
       image_version: ${{ github.event.client_payload.image_version }}
       image_name: ghcr.io/calfur/balloon-race
       file_path: ./kubernetes/balloon-race/02-deployment.yml
+      trigger_deploy: true
