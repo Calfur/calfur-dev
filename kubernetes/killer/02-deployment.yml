@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: killer
+  labels:
+    app: killer
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: killer
+  template:
+    metadata:
+      labels:
+        app: killer
+    spec:
+      containers:
+        - name: killer
+          image: ghcr.io/calfur/killer:latest
+          ports:
+            - name: web
+              containerPort: 5000

@@ -11,12 +11,7 @@ spec:
     - match: Host(`killer.jubla-nz.ch`)
       kind: Rule
       services:
-        - name: killer-frontend
-          port: 80
-    - match: Host(`api.killer.jubla-nz.ch`)
-      kind: Rule
-      services:
-        - name: killer-backend
+        - name: killer
           port: 80
   tls:
     certResolver: myresolver

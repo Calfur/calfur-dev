@@ -1,6 +1,4 @@
 resources:
-  - backend/01-service.yml
-  - backend/02-deployment.yml
-  - frontend/01-service.yml
-  - frontend/02-deployment.yml
+  - 01-service.yml
+  - 02-deployment.yml
   - 03-ingress.yml
