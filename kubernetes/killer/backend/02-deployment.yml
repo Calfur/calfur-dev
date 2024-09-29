@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: killer-backend
-          image: ghcr.io/calfur/killer-backend:03e1537c91f74bd6b215f36464adaed9a56f14a7
+          image: ghcr.io/calfur/killer-backend:552329630debcf843ffa0e4d81850eec37ff93b9
           ports:
             - name: backend
               containerPort: 5000
