@@ -24,6 +24,12 @@ jobs:
         run: |
           sed -i "s|ghcr.io/.*/.*:.*|${{ inputs.image_name }}:${{ inputs.image_version }}|g" ${{ inputs.file_path }}
 
+      - name: Fetch latest changes
+        run: git fetch origin master
+
+      - name: Rebase on latest
+        run: git rebase origin/master
+
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
@@ -31,6 +37,9 @@ jobs:
           message: "Update image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}"
           add: ${{ inputs.file_path }}
       
+      - name: Push changes
+        run: git push --force-with-lease
+
       - name: Trigger deployment pipeline
         uses: peter-evans/repository-dispatch@v3
         with:
