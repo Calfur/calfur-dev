@@ -1,0 +1,13 @@
+name: Update Killer Images
+
+on:
+  repository_dispatch:
+    types: [new-killer-backend-image]
+
+jobs:
+  update-backend-deployment:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/calfur/killer-backend
+      file_path: ./kubernetes/killer/backend/02-deployment.yml
