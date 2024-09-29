@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: killer-frontend
-          image: ghcr.io/calfur/killer-frontend:ad6dc36bff78c88642922d19e7aa280118c91324
+          image: ghcr.io/calfur/killer-frontend:552329630debcf843ffa0e4d81850eec37ff93b9
           ports:
             - name: web
               containerPort: 80
