@@ -33,6 +33,7 @@ jobs:
           default_author: github_actions
           message: "Update image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}"
           add: ${{ inputs.file_path }}
+          pull: '--rebase'
 
       - name: Trigger deployment pipeline
         if: ${{ inputs.trigger_deploy == true }}
