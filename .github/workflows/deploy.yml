@@ -55,6 +55,7 @@ jobs:
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/pannenstreifen
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/q-swiper
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/balloon-race
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/killer
 
           echo "Cleaning up"
           rm -rf ${{ env.DEPLOY_PATH }}
