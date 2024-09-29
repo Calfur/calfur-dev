@@ -27,11 +27,11 @@ jobs:
       - name: Push new branch
         run: |
           git push --set-upstream origin update-${{ inputs.image_name }}-${{ inputs.image_version }}
-    
+
       - name: Update Image Version
         run: |
           sed -i "s|ghcr.io/.*/.*:.*|${{ inputs.image_name }}:${{ inputs.image_version }}|g" ${{ inputs.file_path }}
-  
+
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
@@ -47,21 +47,21 @@ jobs:
           body: "This PR updates the image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}."
           base: master
           draft: false
-      
+
       - name: Merge the PR
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { data: pullRequests } = await github.pulls.list({
+            const pullRequests = await github.pulls.list({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              head: `update-${{ inputs.image_name }}-${{ inputs.image_version }}`
+              head: `${context.repo.owner}:update-${{ inputs.image_name }}-${{ inputs.image_version }}`
             });
 
-            if (pullRequests.length > 0) {
-              const pr = pullRequests[0];
+            if (pullRequests.data.length > 0) {
+              const pr = pullRequests.data[0];
               await github.pulls.merge({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
