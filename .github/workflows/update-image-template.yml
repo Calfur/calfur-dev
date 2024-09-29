@@ -20,14 +20,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Create a new branch
-        run: |
-          git checkout -b update-${{ inputs.image_name }}-${{ inputs.image_version }}
-
-      - name: Push new branch
-        run: |
-          git push --set-upstream origin update-${{ inputs.image_name }}-${{ inputs.image_version }}
-
       - name: Update Image Version
         run: |
           sed -i "s|ghcr.io/.*/.*:.*|${{ inputs.image_name }}:${{ inputs.image_version }}|g" ${{ inputs.file_path }}
@@ -38,11 +30,8 @@ jobs:
           default_author: github_actions
           message: "Update image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}"
           add: ${{ inputs.file_path }}
+          new_branch: update-${{ inputs.image_name }}-${{ inputs.image_version }}
 
-      - name: Push changes
-        run: |
-          git push --set-upstream origin update-${{ inputs.image_name }}-${{ inputs.image_version }}
-  
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
