@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: default
-  name: killer
+  name: killer-frontend
   labels:
-    app: killer
+    app: killer-frontend
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: killer
+      app: killer-frontend
   template:
     metadata:
       labels:
-        app: killer
+        app: killer-frontend
     spec:
       containers:
-        - name: killer
-          image: ghcr.io/calfur/killer:307fc76f59330f6f24fcb9ff5b72fa9b7d5dd670
+        - name: killer-frontend
+          image: ghcr.io/calfur/killer-frontend:latest
           ports:
             - name: web
               containerPort: 80
