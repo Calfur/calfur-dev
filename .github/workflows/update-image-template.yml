@@ -20,15 +20,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Create a new branch
+        run: |
+          git checkout -b update-${{ inputs.image_name }}-${{ inputs.image_version }}
+
       - name: Update Image Version
         run: |
           sed -i "s|ghcr.io/.*/.*:.*|${{ inputs.image_name }}:${{ inputs.image_version }}|g" ${{ inputs.file_path }}
-
-      - name: Fetch latest changes
-        run: git fetch origin master
-
-      - name: Rebase on latest
-        run: git rebase origin/master
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -36,9 +34,40 @@ jobs:
           default_author: github_actions
           message: "Update image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}"
           add: ${{ inputs.file_path }}
+
+      - name: Push new branch
+        run: |
+          git push origin update-${{ inputs.image_name }}-${{ inputs.image_version }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          branch: update-${{ inputs.image_name }}-${{ inputs.image_version }}
+          title: "Update image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}"
+          body: "This PR updates the image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}."
+          base: master
+          draft: false
       
-      - name: Push changes
-        run: git push --force-with-lease
+      - name: Merge the PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data: pullRequests } = await github.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: `update-${{ inputs.image_name }}-${{ inputs.image_version }}`
+            });
+
+            if (pullRequests.length > 0) {
+              const pr = pullRequests[0];
+              await github.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number
+              });
+            }
 
       - name: Trigger deployment pipeline
         uses: peter-evans/repository-dispatch@v3
