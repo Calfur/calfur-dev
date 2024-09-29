@@ -39,6 +39,10 @@ jobs:
           message: "Update image version of ${{ inputs.image_name }} to ${{ inputs.image_version }}"
           add: ${{ inputs.file_path }}
 
+      - name: Push changes
+        run: |
+          git push --set-upstream origin update-${{ inputs.image_name }}-${{ inputs.image_version }}
+  
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
