@@ -32,20 +32,19 @@ https://docs.k3s.io/installation/uninstall
 
 ## Current server calfur-001
 
-## Connect to server
+### Connect to server
 
 -   cd OneDrive\sshkeys
 -   `ssh -i sshkey root@95.217.176.65` or `ssh -i sshkeygithub root@95.217.176.65`
--   cd ../opt/docker-projects
 
-## Useful commands
+### Useful commands
 
 - docker build -t nginx-calfur-dev .
 - docker stop nginx-proxy
 - docker rm nginx-proxy
 - docker run -d --name nginx-proxy --network webnet -p 443:443 nginx-calfur-dev
 
-### Debug:
+#### Debug:
 
 -   kubectl get pods --all-namespaces
 -   kubectl logs traefik-b5965ccd-wdklg
