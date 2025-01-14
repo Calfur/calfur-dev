@@ -6,7 +6,7 @@ The repository responsible to deploy projects on my server
 
 https://calfur.dev
 
-## How to preper a new server
+## How to prepare a new server
 
 The setup is based on this guide: https://doc.traefik.io/traefik/user-guides/crd-acme/#traefik-crd-lets-encrypt.
 
@@ -29,3 +29,25 @@ kubectl port-forward --address 0.0.0.0 service/traefik 443:443 -n default
 https://docs.k3s.io/installation/uninstall
 
 /usr/local/bin/k3s-uninstall.sh
+
+## Current server calfur-001
+
+## Connect to server
+
+-   cd OneDrive\sshkeys
+-   `ssh -i sshkey root@95.217.176.65` or `ssh -i sshkeygithub root@95.217.176.65`
+-   cd ../opt/docker-projects
+
+## Useful commands
+
+- docker build -t nginx-calfur-dev .
+- docker stop nginx-proxy
+- docker rm nginx-proxy
+- docker run -d --name nginx-proxy --network webnet -p 443:443 nginx-calfur-dev
+
+### Debug:
+
+-   kubectl get pods --all-namespaces
+-   kubectl logs traefik-b5965ccd-wdklg
+-   cd ../letsencrypt/
+-   kubectl delete pods --all
