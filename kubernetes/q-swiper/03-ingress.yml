@@ -3,14 +3,15 @@ kind: IngressRoute
 metadata:
   namespace: default
   name: ingressroute-q-swiper
+
 spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host(`q-swiper.calfur.dev`)
-    kind: Rule
-    services:
-    - name: q-swiper
-      port: 80
+    - match: Host(`q-swiper.calfur.dev`)
+      kind: Rule
+      services:
+        - name: q-swiper
+          port: 80
   tls:
     certResolver: myresolver

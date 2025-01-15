@@ -7,10 +7,10 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host(`pannenstreifen.calfur.dev`)
-    kind: Rule
-    services:
-    - name: pannenstreifen-website
-      port: 80
+    - match: Host(`pannenstreifen.calfur.dev`)
+      kind: Rule
+      services:
+        - name: pannenstreifen-website
+          port: 80
   tls:
     certResolver: myresolver

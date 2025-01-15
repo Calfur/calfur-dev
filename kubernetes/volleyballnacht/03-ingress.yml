@@ -7,10 +7,10 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: Host(`volleyballnacht.jubla-nz.ch`)
-    kind: Rule
-    services:
-    - name: volleyballnacht
-      port: 80
+    - match: Host(`volleyballnacht.jubla-nz.ch`)
+      kind: Rule
+      services:
+        - name: volleyballnacht
+          port: 80
   tls:
     certResolver: myresolver
