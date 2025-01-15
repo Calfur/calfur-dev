@@ -1,0 +1,14 @@
+name: Update Volleyball Nacht Image
+
+on:
+  repository_dispatch:
+    types: [new-fondue-plausch-image]
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/jubla-nz/fondue-plausch
+      file_path: ./kubernetes/fondueplausch/02-deployment.yml
+      trigger_deploy: true

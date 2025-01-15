@@ -1,0 +1,14 @@
+name: Update Volleyball Nacht Image
+
+on:
+  repository_dispatch:
+    types: [new-volleyball-nacht-image]
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/jubla-nz/volleyball-nacht
+      file_path: ./kubernetes/volleyballnacht/02-deployment.yml
+      trigger_deploy: true
