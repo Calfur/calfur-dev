@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: pannenstreifen-website
-          image: ghcr.io/calfur/pannenstreifen-website:8dc90f2f4d17236c6b75bd2b7a0f7b843c45de7f
+          image: ghcr.io/calfur/pannenstreifen-website:a7fc79938386c0696ecfeb482fded5585d9b8b87
           ports:
             - name: web
               containerPort: 80
