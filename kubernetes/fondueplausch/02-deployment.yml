@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: default
-  name: q-swiper
+  name: fondueplausch
   labels:
-    app: q-swiper
+    app: fondueplausch
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: q-swiper
+      app: fondueplausch
   template:
     metadata:
       labels:
-        app: q-swiper
+        app: fondueplausch
     spec:
       containers:
-        - name: q-swiper
-          image: ghcr.io/q-swiper/map-generator:8e58ab06e6ec28dc25f8c77bb84ab63289d454ab
+        - name: fondueplausch
+          image: ghcr.io/jubla-nz/fondue-plausch:bf2c8143ba35fa9bc38b670b5ee0833dab77ffdb
           ports:
             - name: web
               containerPort: 80

@@ -38,7 +38,7 @@ jobs:
           set -e
 
           echo "Creating Docker registry secret"
-          kubectl create secret docker-registry ghcr-secret-q-swiper \
+          kubectl create secret docker-registry ghcr-secret \
             --docker-server=ghcr.io \
             --docker-username=${{ github.actor }} \
             --docker-password=${{ secrets.GH_PAT_PACKAGES_READ }} \
@@ -56,6 +56,8 @@ jobs:
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/q-swiper
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/balloon-race
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/killer
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/fondueplausch
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/volleyballnacht
 
           echo "Cleaning up"
           rm -rf ${{ env.DEPLOY_PATH }}

@@ -2,23 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: default
-  name: q-swiper
+  name: volleyballnacht
   labels:
-    app: q-swiper
+    app: volleyballnacht
 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: q-swiper
+      app: volleyballnacht
   template:
     metadata:
       labels:
-        app: q-swiper
+        app: volleyballnacht
     spec:
       containers:
-        - name: q-swiper
-          image: ghcr.io/q-swiper/map-generator:8e58ab06e6ec28dc25f8c77bb84ab63289d454ab
+        - name: volleyballnacht
+          image: ghcr.io/jubla-nz/volleyball-nacht:eafde33ec977ef8e0c3739521976bd33bf6342ef
           ports:
             - name: web
               containerPort: 80
