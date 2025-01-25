@@ -58,6 +58,7 @@ jobs:
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/killer
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/fondueplausch
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/volleyballnacht
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/star-wars-bild-countdown
 
           echo "Cleaning up"
           rm -rf ${{ env.DEPLOY_PATH }}
