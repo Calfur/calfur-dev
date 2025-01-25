@@ -1,0 +1,14 @@
+name: Update Star Wars Bild Countdown Image
+
+on:
+  repository_dispatch:
+    types: [new-star-wars-bild-countdown-image]
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/calfur/star-wars-bild-countdown
+      file_path: ./kubernetes/star-wars-bild-countdown/02-deployment.yml
+      trigger_deploy: true
