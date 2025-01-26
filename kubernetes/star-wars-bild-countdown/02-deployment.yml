@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: star-wars-bild-countdown
-          image: ghcr.io/calfur/star-wars-bild-countdown:54c57a9372fbeaa38d3b1022f1581b5becb52fef
+          image: ghcr.io/calfur/star-wars-bild-countdown:dee98097010a0741282e25d0440b121cf31993da
           ports:
             - name: web
               containerPort: 80
