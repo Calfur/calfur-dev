@@ -49,6 +49,11 @@ jobs:
           kubectl create secret generic traefik-acme-email \
             --from-literal=email=${{ secrets.EMAIL }} \
             --dry-run=client -o yaml | kubectl apply -f -
+            
+          echo "Creating Grafana admin credentials secret"
+          kubectl create secret generic grafana-admin-credentials \
+            --from-literal=password=${{ secrets.GRAFANA_ADMIN_PASSWORD }} \
+            --dry-run=client -o yaml | kubectl apply -f -
 
           echo "Applying Kubernetes manifests"
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/traefik
@@ -59,6 +64,7 @@ jobs:
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/fondueplausch
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/volleyballnacht
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/star-wars-bild-countdown
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/metrics
 
           echo "Cleaning up"
           rm -rf ${{ env.DEPLOY_PATH }}
