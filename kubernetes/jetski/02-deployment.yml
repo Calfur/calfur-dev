@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: jetski
+  labels:
+    app: jetski
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jetski
+  template:
+    metadata:
+      labels:
+        app: jetski
+    spec:
+      containers:
+        - name: jetski
+          image: ghcr.io/calfur/jetski:latest
+          ports:
+            - name: web
+              containerPort: 3000
