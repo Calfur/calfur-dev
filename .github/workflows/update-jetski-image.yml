@@ -10,5 +10,5 @@ jobs:
     with:
       image_version: ${{ github.event.client_payload.image_version }}
       image_name: ghcr.io/calfur/jetski
-      file_path: ./kubernetes/jetstki/02-deployment.yml
+      file_path: ./kubernetes/jetski/02-deployment.yml
       trigger_deploy: true
