@@ -7,6 +7,13 @@ spec:
   entryPoints:
     - websecure
   routes:
+    - match: Host(`jetski.calfur.dev`) && PathPrefix(`/ws`)
+      kind: Rule
+      services:
+        - name: jetski
+          port: 80
+      middlewares:
+        - name: websocket-headers
     - match: Host(`jetski.calfur.dev`)
       kind: Rule
       services:
