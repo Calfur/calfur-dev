@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: jetski
-          image: ghcr.io/calfur/jetski:3bda8f11973487d52200acd80d4e61d08ead686d
+          image: ghcr.io/calfur/jetski:24ea818b591fa26ffcc0ae9bbf31013ae207b99c
           ports:
             - name: web
               containerPort: 3000
