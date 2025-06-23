@@ -50,3 +50,5 @@ https://docs.k3s.io/installation/uninstall
 -   kubectl logs traefik-b5965ccd-wdklg
 -   cd ../letsencrypt/
 -   kubectl delete pods --all
+-   kubectl logs -n default deployment/traefik --tail=50
+-   kubectl get ingressroute,ingress,svc,deploy,pod -n default | cat
