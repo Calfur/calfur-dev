@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: fondueplausch
-          image: ghcr.io/jubla-nz/fondue-plausch:56ce35785a0bd7b619089aafbb1f257999e576cd
+          image: ghcr.io/jubla-nz/fondue-plausch:8ee0707f4f654d027b16be72354158f8cdf31945
           ports:
             - name: web
               containerPort: 80
