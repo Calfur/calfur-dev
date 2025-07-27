@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: volleyballnacht
-          image: ghcr.io/jubla-nz/volleyball-nacht:b32c3307e435c37321da8c5c757a5bd0f5d74377
+          image: ghcr.io/jubla-nz/volleyball-nacht:e88473a7f577bb8e5b2cd0dddc1e500cb6f93422
           ports:
             - name: web
               containerPort: 80
