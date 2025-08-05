@@ -1,0 +1,14 @@
+name: Update Homepage Image
+
+on:
+  repository_dispatch:
+    types: [new-homepage-image]
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/calfur/homepage
+      file_path: ./kubernetes/homepage/02-deployment.yml
+      trigger_deploy: true 

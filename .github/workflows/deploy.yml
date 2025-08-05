@@ -66,6 +66,7 @@ jobs:
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/star-wars-bild-countdown
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/metrics
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/jetski
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/homepage
 
           echo "Cleaning up"
           rm -rf ${{ env.DEPLOY_PATH }}
