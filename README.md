@@ -6,6 +6,8 @@ The repository responsible to deploy projects on my server
 
 https://calfur.dev
 
+[![Deploy to Kubernetes (calfur-001)](https://github.com/Calfur/calfur-dev/actions/workflows/deploy.yml/badge.svg)](https://github.com/Calfur/calfur-dev/actions/workflows/deploy.yml)
+
 ## How to prepare a new server
 
 The setup is based on this guide: https://doc.traefik.io/traefik/user-guides/crd-acme/#traefik-crd-lets-encrypt.
