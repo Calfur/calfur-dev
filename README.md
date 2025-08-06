@@ -33,6 +33,8 @@ Update settings with:
   - `sudo ufw delete allow 22/tcp`
   - `sudo ufw reload`
 
+Maybe a restart of the server helps in case of something going wrong.
+
 ### Kubernetes
 
 The https certificate setup is based on this guide: https://doc.traefik.io/traefik/user-guides/crd-acme/#traefik-crd-lets-encrypt.
