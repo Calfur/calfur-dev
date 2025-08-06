@@ -27,6 +27,7 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        fingerprint: ${{ secrets.SERVER_FINGERPRINT }}
         source: "./kubernetes/*"
         target: "${{ env.DEPLOY_PATH }}"
 
@@ -36,6 +37,7 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         username: ${{ secrets.SERVER_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
+        fingerprint: ${{ secrets.SERVER_FINGERPRINT }}
         script: |
           set -e
 
