@@ -34,8 +34,8 @@ https://docs.k3s.io/installation/uninstall
 
 ### Connect to server
 
--   cd OneDrive\sshkeys
--   `ssh -i sshkey root@95.217.176.65` or `ssh -i sshkeygithub root@95.217.176.65`
+-   SSH with private key & password
+-   Termius or Terminal with credentials from KeePass
 
 ### Useful commands
 
