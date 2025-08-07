@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: homepage
-          image: ghcr.io/calfur/homepage:5d7cfcb87d161faaa99d9c630a8c9bc1798c968c
+          image: ghcr.io/calfur/homepage:375a8ba971be627fddec91279022c56de1bd0929
           ports:
             - name: web
               containerPort: 3000 
