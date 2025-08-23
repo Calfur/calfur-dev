@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`party-battle.thirty-degrees.com`)
+    - match: Host(`party-battle.thirty-degrees.ch`)
       kind: Rule
       services:
         - name: party-battle-frontend
