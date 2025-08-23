@@ -1,0 +1,14 @@
+name: Update Party Battle Frontend Image
+
+on:
+  repository_dispatch:
+    types: [new-party-battle-frontend-image]
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/thirty-degrees/frontend-party-battle-web
+      file_path: ./kubernetes/party-battle/02-deployment.yml
+      trigger_deploy: true
