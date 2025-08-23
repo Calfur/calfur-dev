@@ -9,6 +9,7 @@ spec:
   routes:
     - match: Host(`party-battle.thirty-degrees.ch`)
       kind: Rule
+      priority: 0
       services:
         - name: party-battle-frontend
           port: 80
