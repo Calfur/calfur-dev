@@ -18,11 +18,7 @@ spec:
     spec:
       containers:
         - name: party-battle-backend-catchall
-          image: hashicorp/http-echo:0.2.3
-          args:
-            - "-listen=:8080"
-            - "-status=400"
-            - "-text=Invalid API version"
+          image: mccutchen/go-httpbin:latest
           ports:
             - name: web
               containerPort: 8080
