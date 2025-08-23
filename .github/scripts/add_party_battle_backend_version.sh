@@ -99,5 +99,3 @@ if ! grep -qxF "${LINE}" "${KFILE}"; then
 fi
 
 echo "Generated backend version manifests in ${DIR}"
-
-

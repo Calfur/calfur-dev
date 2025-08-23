@@ -25,10 +25,9 @@ fi
 KFILE="kubernetes/party-battle/backend/kustomization.yaml"
 LINE="  - versions/v${BACKEND_VERSION}/"
 if [[ -f "${KFILE}" ]]; then
-  # portable in-place sed (Linux CI environment supports -i)
-  sed -i "\|${LINE}|d" "${KFILE}"
+  TMP=$(mktemp)
+  grep -vxF "${LINE}" "${KFILE}" > "${TMP}" || true
+  mv "${TMP}" "${KFILE}"
 fi
 
 echo "Removed backend version manifests for v${BACKEND_VERSION}"
-
-
