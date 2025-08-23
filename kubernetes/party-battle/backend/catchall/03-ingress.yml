@@ -9,7 +9,7 @@ spec:
   routes:
     - match: Host(`party-battle.thirty-degrees.ch`) && PathPrefix(`/api`)
       kind: Rule
-      priority: 1
+      priority: 2
       middlewares:
         - name: party-battle-backend-catchall-400
       services:
