@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`party-battle.thirty-degrees.ch`)
+    - match: Host(`party-battle.thirty-degrees.ch`) && !(PathPrefix(`/api`)
       kind: Rule
       priority: 0
       services:
