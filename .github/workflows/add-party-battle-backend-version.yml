@@ -1,0 +1,60 @@
+name: Add Party Battle Backend Version
+
+on:
+  repository_dispatch:
+    types: [add-party-battle-backend-version]
+
+jobs:
+  add-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Prepare variables
+        id: prep
+        run: |
+          BV="${{ github.event.client_payload.backend_version }}"
+          IMG_TAG="${{ github.event.client_payload.image_version }}"
+          if [ -z "$BV" ] || [ -z "$IMG_TAG" ]; then
+            echo "backend_version and image_version are required" >&2
+            exit 1
+          fi
+          SAFE_NAME=$(echo "$BV" | tr '.-' '._' | tr '_' '-')
+          DIR="kubernetes/party-battle/backend/versions/v$BV"
+          SVC_NAME="party-battle-backend-v$(echo $BV | tr '.' '-')"
+          echo "dir=$DIR" >> $GITHUB_OUTPUT
+          echo "svc=$SVC_NAME" >> $GITHUB_OUTPUT
+          echo "safe=$SAFE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create manifests for version
+        run: |
+          chmod +x ./.github/scripts/add_party_battle_backend_version.sh
+          BACKEND_VERSION="${{ github.event.client_payload.backend_version }}" \
+          IMAGE_VERSION="${{ github.event.client_payload.image_version }}" \
+          ./.github/scripts/add_party_battle_backend_version.sh
+
+      - name: Add version to backend kustomization
+        run: |
+          set -euo pipefail
+          BV="${{ github.event.client_payload.backend_version }}"
+          FILE="kubernetes/party-battle/backend/kustomization.yaml"
+          LINE="  - versions/v${BV}/"
+          grep -qxF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "Add backend version v${{ github.event.client_payload.backend_version }}"
+          add: |
+            kubernetes/party-battle/backend/versions/v${{ github.event.client_payload.backend_version }}
+            kubernetes/party-battle/backend/kustomization.yaml
+          pull: '--rebase --autostash'
+
+      - name: Trigger deployment pipeline
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: deploy
+
+

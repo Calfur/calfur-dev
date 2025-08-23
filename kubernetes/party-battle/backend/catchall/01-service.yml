@@ -2,13 +2,15 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: default
-  name: party-battle-frontend
+  name: party-battle-backend-catchall
 
 spec:
   ports:
     - protocol: TCP
       name: web
       port: 80
-      targetPort: 80
+      targetPort: 8080
   selector:
-    app: party-battle-frontend
+    app: party-battle-backend-catchall
+
+

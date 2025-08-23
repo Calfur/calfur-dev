@@ -1,0 +1,43 @@
+name: Remove Party Battle Backend Version
+
+on:
+  repository_dispatch:
+    types: [remove-party-battle-backend-version]
+
+jobs:
+  remove-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Prepare variables
+        id: prep
+        run: |
+          BV="${{ github.event.client_payload.backend_version }}"
+          if [ -z "$BV" ]; then
+            echo "backend_version is required" >&2
+            exit 1
+          fi
+          DIR="kubernetes/party-battle/backend/versions/v$BV"
+          echo "dir=$DIR" >> $GITHUB_OUTPUT
+
+      - name: Remove manifests for version
+        run: |
+          chmod +x ./.github/scripts/remove_party_battle_backend_version.sh
+          BACKEND_VERSION="${{ github.event.client_payload.backend_version }}" \
+          ./.github/scripts/remove_party_battle_backend_version.sh
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "Remove backend version v${{ github.event.client_payload.backend_version }}"
+          add: |
+            kubernetes/party-battle/backend/kustomization.yaml
+          pull: '--rebase --autostash'
+
+      - name: Trigger deployment pipeline
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: deploy

@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Inputs via environment variables
+# BACKEND_VERSION: e.g. 1.3.2
+
+if [[ -z "${BACKEND_VERSION:-}" ]]; then
+  echo "BACKEND_VERSION must be set" >&2
+  exit 1
+fi
+
+DIR="kubernetes/party-battle/backend/versions/v${BACKEND_VERSION}"
+
+if [[ -d "${DIR}" ]]; then
+  # Remove from git if tracked; fallback to rm -rf if not
+  if git ls-files --error-unmatch "${DIR}" >/dev/null 2>&1; then
+    git rm -r "${DIR}"
+  else
+    rm -rf "${DIR}"
+  fi
+else
+  echo "Directory ${DIR} does not exist; nothing to remove."
+fi
+
+KFILE="kubernetes/party-battle/backend/kustomization.yaml"
+LINE="  - versions/v${BACKEND_VERSION}/"
+if [[ -f "${KFILE}" ]]; then
+  TMP=$(mktemp)
+  grep -vxF "${LINE}" "${KFILE}" > "${TMP}" || true
+  mv "${TMP}" "${KFILE}"
+fi
+
+echo "Removed backend version manifests for v${BACKEND_VERSION}"
