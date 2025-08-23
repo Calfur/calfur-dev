@@ -74,7 +74,7 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   namespace: default
-  name: __SVC__
+  name: __INGRESS_NAME__
 spec:
   entryPoints:
     - websecure
@@ -88,7 +88,8 @@ spec:
   tls:
     certResolver: myresolver
 EOF
-sed "s|__SVC__|${SVC}|g; s|__BV__|${BACKEND_VERSION}|g" "${TMP_FILE}" > "${DIR}/03-ingress.yml"
+ING="ingressroute-${SVC}"
+sed "s|__INGRESS_NAME__|${ING}|g; s|__SVC__|${SVC}|g; s|__BV__|${BACKEND_VERSION}|g" "${TMP_FILE}" > "${DIR}/03-ingress.yml"
 rm -f "${TMP_FILE}"
 
 # Ensure backend kustomization references this version
