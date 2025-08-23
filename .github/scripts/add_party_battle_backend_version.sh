@@ -68,25 +68,28 @@ spec:
         - name: ghcr-secret
 EOF
 
-cat > "${DIR}/03-ingress.yml" <<EOF
+TMP_FILE=$(mktemp)
+cat > "${TMP_FILE}" <<'EOF'
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   namespace: default
-  name: ${SVC}
+  name: __SVC__
 spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`party-battle.thirty-degrees.ch`) && PathPrefix(`/api/v${BACKEND_VERSION}`)
+    - match: Host(`party-battle.thirty-degrees.ch`) && PathPrefix(`/api/v__BV__`)
       kind: Rule
       priority: 10
       services:
-        - name: ${SVC}
+        - name: __SVC__
           port: 80
   tls:
     certResolver: myresolver
 EOF
+sed "s|__SVC__|${SVC}|g; s|__BV__|${BACKEND_VERSION}|g" "${TMP_FILE}" > "${DIR}/03-ingress.yml"
+rm -f "${TMP_FILE}"
 
 # Ensure backend kustomization references this version
 KFILE="kubernetes/party-battle/backend/kustomization.yaml"

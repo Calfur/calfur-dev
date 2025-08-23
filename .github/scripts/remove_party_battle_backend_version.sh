@@ -12,7 +12,12 @@ fi
 DIR="kubernetes/party-battle/backend/versions/v${BACKEND_VERSION}"
 
 if [[ -d "${DIR}" ]]; then
-  git rm -r "${DIR}"
+  # Remove from git if tracked; fallback to rm -rf if not
+  if git ls-files --error-unmatch "${DIR}" >/dev/null 2>&1; then
+    git rm -r "${DIR}"
+  else
+    rm -rf "${DIR}"
+  fi
 else
   echo "Directory ${DIR} does not exist; nothing to remove."
 fi
