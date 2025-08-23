@@ -6,6 +6,4 @@ metadata:
 spec:
   replacePathRegex:
     regex: ^/api/?.*
-    replacement: /status/400
-
-
+    replacement: /status/400?body=Invalid%20API%20version
