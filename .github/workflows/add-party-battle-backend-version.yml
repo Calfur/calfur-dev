@@ -1,0 +1,131 @@
+name: Add Party Battle Backend Version
+
+on:
+  repository_dispatch:
+    types: [add-party-battle-backend-version]
+
+jobs:
+  add-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Prepare variables
+        id: prep
+        run: |
+          BV="${{ github.event.client_payload.backend_version }}"
+          IMG_TAG="${{ github.event.client_payload.image_version }}"
+          if [ -z "$BV" ] || [ -z "$IMG_TAG" ]; then
+            echo "backend_version and image_version are required" >&2
+            exit 1
+          fi
+          SAFE_NAME=$(echo "$BV" | tr '.-' '._' | tr '_' '-')
+          DIR="kubernetes/party-battle/backend/versions/v$BV"
+          SVC_NAME="party-battle-backend-v$(echo $BV | tr '.' '-')"
+          echo "dir=$DIR" >> $GITHUB_OUTPUT
+          echo "svc=$SVC_NAME" >> $GITHUB_OUTPUT
+          echo "safe=$SAFE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create manifests for version
+        run: |
+          set -euo pipefail
+          DIR="${{ steps.prep.outputs.dir }}"
+          SVC="${{ steps.prep.outputs.svc }}"
+          BV="${{ github.event.client_payload.backend_version }}"
+          mkdir -p "$DIR"
+          R="res"
+          echo "${R}ources:" > "$DIR/kustomization.yaml"
+          echo "  - 01-service.yml" >> "$DIR/kustomization.yaml"
+          echo "  - 02-deployment.yml" >> "$DIR/kustomization.yaml"
+          echo "  - 03-ingress.yml" >> "$DIR/kustomization.yaml"
+          cat > "$DIR/01-service.yml" << YAML
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: $SVC
+
+spec:
+  ports:
+    - protocol: TCP
+      name: api
+      port: 80
+      targetPort: 2567
+  selector:
+    app: $SVC
+YAML
+          cat > "$DIR/02-deployment.yml" << YAML
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: $SVC
+  labels:
+    app: $SVC
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: $SVC
+  template:
+    metadata:
+      labels:
+        app: $SVC
+    spec:
+      containers:
+        - name: party-battle-backend
+          image: ghcr.io/thirty-degrees/backend-party-battle:${{ github.event.client_payload.image_version }}
+          ports:
+            - name: api
+              containerPort: 2567
+      imagePullSecrets:
+        - name: ghcr-secret
+YAML
+          cat > "$DIR/03-ingress.yml" << 'YAML'
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  namespace: default
+  name: __SVC__
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`party-battle.thirty-degrees.ch`) && PathPrefix(`/api/v__BV__`)
+      kind: Rule
+      priority: 10
+      services:
+        - name: __SVC__
+          port: 80
+  tls:
+    certResolver: myresolver
+YAML
+          sed -i "s|__SVC__|$SVC|g" "$DIR/03-ingress.yml"
+          sed -i "s|__BV__|$BV|g" "$DIR/03-ingress.yml"
+
+      - name: Add version to backend kustomization
+        run: |
+          set -euo pipefail
+          BV="${{ github.event.client_payload.backend_version }}"
+          FILE="kubernetes/party-battle/backend/kustomization.yaml"
+          LINE="  - versions/v${BV}/"
+          grep -qxF "$LINE" "$FILE" || echo "$LINE" >> "$FILE"
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "Add backend version v${{ github.event.client_payload.backend_version }}"
+          add: |
+            kubernetes/party-battle/backend/versions/v${{ github.event.client_payload.backend_version }}
+            kubernetes/party-battle/backend/kustomization.yaml
+          pull: '--rebase --autostash'
+
+      - name: Trigger deployment pipeline
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: deploy
+
+

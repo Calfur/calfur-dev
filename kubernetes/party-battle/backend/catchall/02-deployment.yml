@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: party-battle-backend-catchall
+  labels:
+    app: party-battle-backend-catchall
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: party-battle-backend-catchall
+  template:
+    metadata:
+      labels:
+        app: party-battle-backend-catchall
+    spec:
+      containers:
+        - name: party-battle-backend-catchall
+          image: hashicorp/http-echo:0.2.3
+          args:
+            - "-listen=:8080"
+            - "-status=400"
+            - "-text=Invalid API version"
+          ports:
+            - name: web
+              containerPort: 8080
+
+

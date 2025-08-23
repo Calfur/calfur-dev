@@ -1,0 +1,18 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  namespace: default
+  name: party-battle
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`party-battle.thirty-degrees.ch`)
+      kind: Rule
+      services:
+        - name: party-battle-frontend
+          port: 80
+  tls:
+    certResolver: myresolver
+
+

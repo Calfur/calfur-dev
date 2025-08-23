@@ -10,5 +10,5 @@ jobs:
     with:
       image_version: ${{ github.event.client_payload.image_version }}
       image_name: ghcr.io/thirty-degrees/frontend-party-battle-web
-      file_path: ./kubernetes/party-battle/02-deployment.yml
+      file_path: ./kubernetes/party-battle/frontend/02-deployment.yml
       trigger_deploy: true

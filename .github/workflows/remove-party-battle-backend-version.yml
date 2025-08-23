@@ -1,0 +1,59 @@
+name: Remove Party Battle Backend Version
+
+on:
+  repository_dispatch:
+    types: [remove-party-battle-backend-version]
+
+jobs:
+  remove-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Prepare variables
+        id: prep
+        run: |
+          BV="${{ github.event.client_payload.backend_version }}"
+          if [ -z "$BV" ]; then
+            echo "backend_version is required" >&2
+            exit 1
+          fi
+          DIR="kubernetes/party-battle/backend/versions/v$BV"
+          echo "dir=$DIR" >> $GITHUB_OUTPUT
+
+      - name: Remove manifests for version
+        run: |
+          set -euo pipefail
+          DIR="${{ steps.prep.outputs.dir }}"
+          if [ -d "$DIR" ]; then
+            git rm -r "$DIR"
+          else
+            echo "Directory $DIR does not exist; nothing to remove."
+          fi
+
+      - name: Remove version from backend kustomization
+        run: |
+          set -euo pipefail
+          BV="${{ github.event.client_payload.backend_version }}"
+          FILE="kubernetes/party-battle/backend/kustomization.yaml"
+          LINE="  - versions/v${BV}/"
+          if [ -f "$FILE" ]; then
+            sed -i "\|$LINE|d" "$FILE"
+          fi
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          default_author: github_actions
+          message: "Remove backend version v${{ github.event.client_payload.backend_version }}"
+          add: |
+            kubernetes/party-battle/backend/kustomization.yaml
+          pull: '--rebase --autostash'
+
+      - name: Trigger deployment pipeline
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          event-type: deploy
+
+
