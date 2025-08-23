@@ -24,23 +24,9 @@ jobs:
 
       - name: Remove manifests for version
         run: |
-          set -euo pipefail
-          DIR="${{ steps.prep.outputs.dir }}"
-          if [ -d "$DIR" ]; then
-            git rm -r "$DIR"
-          else
-            echo "Directory $DIR does not exist; nothing to remove."
-          fi
-
-      - name: Remove version from backend kustomization
-        run: |
-          set -euo pipefail
-          BV="${{ github.event.client_payload.backend_version }}"
-          FILE="kubernetes/party-battle/backend/kustomization.yaml"
-          LINE="  - versions/v${BV}/"
-          if [ -f "$FILE" ]; then
-            sed -i "\|$LINE|d" "$FILE"
-          fi
+          chmod +x ./.github/scripts/remove_party_battle_backend_version.sh
+          BACKEND_VERSION="${{ github.event.client_payload.backend_version }}" \
+          ./.github/scripts/remove_party_battle_backend_version.sh
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
@@ -55,5 +41,3 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           event-type: deploy
-
-

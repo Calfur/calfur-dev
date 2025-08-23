@@ -29,81 +29,10 @@ jobs:
 
       - name: Create manifests for version
         run: |
-          set -euo pipefail
-          DIR="${{ steps.prep.outputs.dir }}"
-          SVC="${{ steps.prep.outputs.svc }}"
-          BV="${{ github.event.client_payload.backend_version }}"
-          mkdir -p "$DIR"
-          R="res"
-          echo "${R}ources:" > "$DIR/kustomization.yaml"
-          echo "  - 01-service.yml" >> "$DIR/kustomization.yaml"
-          echo "  - 02-deployment.yml" >> "$DIR/kustomization.yaml"
-          echo "  - 03-ingress.yml" >> "$DIR/kustomization.yaml"
-          cat > "$DIR/01-service.yml" << YAML
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: default
-  name: $SVC
-
-spec:
-  ports:
-    - protocol: TCP
-      name: api
-      port: 80
-      targetPort: 2567
-  selector:
-    app: $SVC
-YAML
-          cat > "$DIR/02-deployment.yml" << YAML
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: default
-  name: $SVC
-  labels:
-    app: $SVC
-
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: $SVC
-  template:
-    metadata:
-      labels:
-        app: $SVC
-    spec:
-      containers:
-        - name: party-battle-backend
-          image: ghcr.io/thirty-degrees/backend-party-battle:${{ github.event.client_payload.image_version }}
-          ports:
-            - name: api
-              containerPort: 2567
-      imagePullSecrets:
-        - name: ghcr-secret
-YAML
-          cat > "$DIR/03-ingress.yml" << 'YAML'
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  namespace: default
-  name: __SVC__
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`party-battle.thirty-degrees.ch`) && PathPrefix(`/api/v__BV__`)
-      kind: Rule
-      priority: 10
-      services:
-        - name: __SVC__
-          port: 80
-  tls:
-    certResolver: myresolver
-YAML
-          sed -i "s|__SVC__|$SVC|g" "$DIR/03-ingress.yml"
-          sed -i "s|__BV__|$BV|g" "$DIR/03-ingress.yml"
+          chmod +x ./.github/scripts/add_party_battle_backend_version.sh
+          BACKEND_VERSION="${{ github.event.client_payload.backend_version }}" \
+          IMAGE_VERSION="${{ github.event.client_payload.image_version }}" \
+          ./.github/scripts/add_party_battle_backend_version.sh
 
       - name: Add version to backend kustomization
         run: |
