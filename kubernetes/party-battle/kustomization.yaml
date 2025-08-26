@@ -1,3 +1,5 @@
+commonLabels:
+  app.kubernetes.io/part-of: party-battle
 resources:
   - frontend/
   - backend/

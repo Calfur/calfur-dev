@@ -16,6 +16,8 @@ SVC="party-battle-backend-v$(echo "${BACKEND_VERSION}" | tr '.' '-')"
 mkdir -p "${DIR}"
 
 cat > "${DIR}/kustomization.yaml" <<EOF
+commonLabels:
+  app.kubernetes.io/part-of: party-battle
 resources:
   - 01-service.yml
   - 02-deployment.yml

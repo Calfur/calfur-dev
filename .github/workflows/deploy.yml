@@ -73,7 +73,7 @@ jobs:
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/metrics
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/jetski
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/homepage
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/party-battle
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/party-battle --prune -l app.kubernetes.io/part-of=party-battle
 
           echo "Cleaning up"
           rm -rf ${{ env.DEPLOY_PATH }}
