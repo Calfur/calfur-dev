@@ -1,5 +1,4 @@
 resources:
   - catchall/
-  - versions/v1.3.2/
   - versions/v1.3.5/
   - versions/v1.3.6/
