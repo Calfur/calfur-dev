@@ -12,5 +12,6 @@ spec:
       targetPort: 80
   selector:
     app: party-battle-frontend
+    app.kubernetes.io/part-of: party-battle
 
 

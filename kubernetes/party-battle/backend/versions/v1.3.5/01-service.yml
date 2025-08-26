@@ -12,3 +12,4 @@ spec:
       targetPort: 2567
   selector:
     app: party-battle-backend-v1-3-5
+    app.kubernetes.io/part-of: party-battle

@@ -3,6 +3,8 @@ kind: Middleware
 metadata:
   namespace: default
   name: party-battle-backend-catchall-400
+  labels:
+    app.kubernetes.io/part-of: party-battle
 spec:
   replacePathRegex:
     regex: ^/api/?.*
