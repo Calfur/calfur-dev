@@ -81,3 +81,4 @@ https://docs.k3s.io/installation/uninstall
 - kubectl delete pods --all
 - kubectl logs -n default deployment/traefik --tail=50
 - kubectl get ingressroute,ingress,svc,deploy,pod -n default | cat
+- kubectl get all,ingressroute,middleware -l app.kubernetes.io/part-of=party-battle -o wide
