@@ -77,6 +77,8 @@ kind: IngressRoute
 metadata:
   namespace: default
   name: __INGRESS_NAME__
+  labels:
+    app.kubernetes.io/part-of: party-battle
 spec:
   entryPoints:
     - websecure
