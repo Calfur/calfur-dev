@@ -13,3 +13,4 @@ resources:
   - versions/v1.6.7/
   - versions/v1.6.8/
   - versions/v1.6.10/
+  - versions/v1.6.11/
