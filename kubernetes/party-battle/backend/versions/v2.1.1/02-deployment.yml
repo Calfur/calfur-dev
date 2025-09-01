@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: party-battle-backend-v2-1-1
+  labels:
+    app: party-battle-backend-v2-1-1
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: party-battle-backend-v2-1-1
+  template:
+    metadata:
+      labels:
+        app: party-battle-backend-v2-1-1
+    spec:
+      containers:
+        - name: party-battle-backend
+          image: ghcr.io/thirty-degrees/backend-party-battle:c63d56b1716f479bf522718b037304081b552c64
+          ports:
+            - name: api
+              containerPort: 2567
+      imagePullSecrets:
+        - name: ghcr-secret
