@@ -12,12 +12,8 @@ spec:
     - match: Host(`party-battle.thirty-degrees.ch`) && PathPrefix(`/api`)
       kind: Rule
       priority: 2
-      middlewares:
-        - name: party-battle-backend-catchall-400
       services:
         - name: party-battle-backend-catchall
           port: 80
   tls:
     certResolver: myresolver
-
-

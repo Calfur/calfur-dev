@@ -18,10 +18,10 @@ spec:
         app.kubernetes.io/part-of: party-battle
     spec:
       containers:
-        - name: party-battle-backend-catchall
-          image: mccutchen/go-httpbin:latest
+        - name: party-battle-backend
+          image: ghcr.io/thirty-degrees/api-version-unsupported:bddc7e871626ab008ef8668933800926981337f8
           ports:
-            - name: web
-              containerPort: 8080
-
-
+            - name: api
+              containerPort: 80
+      imagePullSecrets:
+        - name: ghcr-secret
