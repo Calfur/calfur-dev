@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: party-battle-backend
-          image: ghcr.io/thirty-degrees/api-version-unsupported:86f7a1dcf397b837c1ab2d7635720ea79e59caa7
+          image: ghcr.io/thirty-degrees/api-version-unsupported-colyseus:b92eae9f1153a21a41fcf32bd5ca90cc1d0aaaa6
           ports:
             - name: api
               containerPort: 80
