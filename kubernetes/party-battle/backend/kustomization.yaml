@@ -5,3 +5,4 @@ resources:
   - versions/v2.7.1/
   - versions/v2.8.1/
   - versions/v2.8.2/
+  - versions/v2.9.0/
