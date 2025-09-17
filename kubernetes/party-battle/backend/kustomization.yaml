@@ -4,3 +4,4 @@ resources:
   - versions/v2.10.0/
   - versions/v2.11.0/
   - versions/v2.11.1/
+  - versions/v2.11.2/
