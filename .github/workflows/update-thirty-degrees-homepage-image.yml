@@ -1,0 +1,14 @@
+name: Update Homepage Image
+
+on:
+  repository_dispatch:
+    types: [new-thirty-degrees-homepage-image]
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/thirty-degrees/homepage
+      file_path: ./kubernetes/thirty-degrees-homepage/02-deployment.yml
+      trigger_deploy: true 
