@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: thirty-degrees-homepage
-          image: ghcr.io/thirty-degrees/homepage:e9cf2135914e17e145b299237ef837615f89b2a4
+          image: ghcr.io/thirty-degrees/homepage:09c17ed261ca6ea6e49be6d6cbd9f848b29492e5
           ports:
             - name: web
               containerPort: 3000 
