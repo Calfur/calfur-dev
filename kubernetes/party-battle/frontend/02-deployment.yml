@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: party-battle-frontend
-          image: ghcr.io/thirty-degrees/frontend-party-battle-web:039c7ce6991d0b525f8d7670dd1355434ced806b
+          image: ghcr.io/thirty-degrees/frontend-party-battle-web:8574dd9130cd338a818ee163b48eb66837c33362
           ports:
             - name: web
               containerPort: 80
