@@ -1,3 +1,4 @@
 resources:
   - catchall/
   - versions/v2.19.0/
+  - versions/v2.20.0/
