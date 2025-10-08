@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: watermark-webapp
+  labels:
+    app: watermark-webapp
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: watermark-webapp
+  template:
+    metadata:
+      labels:
+        app: watermark-webapp
+    spec:
+      containers:
+        - name: watermark-webapp
+          image: ghcr.io/thirty-degrees/watermark-webapp:latest
+          ports:
+            - name: web
+              containerPort: 3000 
+      imagePullSecrets:
+        - name: ghcr-secret

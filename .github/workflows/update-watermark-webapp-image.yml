@@ -1,0 +1,14 @@
+name: Update Watermark Webapp Image
+
+on:
+  repository_dispatch:
+    types: [new-watermark-webapp-image]
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/thirty-degrees/watermark-webapp
+      file_path: ./kubernetes/watermark-webapp/02-deployment.yml
+      trigger_deploy: true 

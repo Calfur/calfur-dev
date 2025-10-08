@@ -75,6 +75,7 @@ jobs:
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/homepage
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/thirty-degrees-homepage
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/party-battle --prune -l app.kubernetes.io/part-of=party-battle --prune-allowlist=apps/v1/Deployment --prune-allowlist=core/v1/Service --prune-allowlist=traefik.io/v1alpha1/IngressRoute --prune-allowlist=traefik.io/v1alpha1/Middleware
+          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/watermark-webapp --prune -l app.kubernetes.io/part-of=watermark-webapp --prune-allowlist=apps/v1/Deployment --prune-allowlist=core/v1/Service --prune-allowlist=traefik.io/v1alpha1/IngressRoute --prune-allowlist=traefik.io/v1alpha1/Middleware
 
           echo "Cleaning up"
           rm -rf ${{ env.DEPLOY_PATH }}
