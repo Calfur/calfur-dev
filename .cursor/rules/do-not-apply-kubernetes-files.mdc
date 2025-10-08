@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+
+As the k3s environment is hosted on a remote server where you don't have access to, don't run any kubectl commands, they will fail. The commands will be run in .github/workflows/deploy.yml
