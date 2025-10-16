@@ -23,12 +23,15 @@ spec:
           args:
             - --api.insecure
             - --accesslog
+            - --entryPoints.web.Address=:8000
             - --entryPoints.websecure.Address=:4443
             - --providers.kubernetescrd
             - --certificatesresolvers.myresolver.acme.tlschallenge
             - --certificatesresolvers.myresolver.acme.email=$(TRAEFIK_ACME_EMAIL)
             - --certificatesresolvers.myresolver.acme.storage=/data/acme.json
           ports:
+            - name: web
+              containerPort: 8000
             - name: websecure
               containerPort: 4443
           volumeMounts:
