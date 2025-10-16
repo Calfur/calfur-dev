@@ -35,11 +35,10 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`onlinewatermarks.com`)
+    - match: Host(`onlinewatermarks.com`) || Host(`www.onlinewatermarks.com`)
       kind: Rule
       middlewares:
         - name: redirect-to-https
-    - match: Host(`www.onlinewatermarks.com`)
-      kind: Rule
-      middlewares:
-        - name: redirect-www-to-root
+      services:
+        - name: watermark-webapp
+          port: 80
