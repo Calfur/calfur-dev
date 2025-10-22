@@ -59,6 +59,24 @@ https://docs.k3s.io/installation/uninstall
 
 /usr/local/bin/k3s-uninstall.sh
 
+#### How to cleanup disk space
+
+List all images:
+
+- sudo crictl images
+
+List used images:
+
+- sudo crictl ps
+
+Get total space used by images:
+
+- sudo du -sh /var/lib/rancher/k3s/agent/containerd
+
+Delete unused images:
+
+- sudo crictl rmi --prune
+
 ## Current server calfur-001
 
 ### Connect to server
