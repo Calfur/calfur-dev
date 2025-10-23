@@ -9,6 +9,8 @@ spec:
   routes:
     - match: Host(`onlinewatermarks.com`)
       kind: Rule
+      middlewares:
+        - name: hsts-header
       services:
         - name: watermark-webapp
           port: 80
