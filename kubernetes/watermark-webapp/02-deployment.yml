@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: watermark-webapp
-          image: ghcr.io/thirty-degrees/watermark-webapp:35a424964a33791cbff60b58554bd952db2c5542
+          image: ghcr.io/thirty-degrees/watermark-webapp:b53e82b99720013c307d1074b88d607f3f6ae43b
           ports:
             - name: web
               containerPort: 3000 
