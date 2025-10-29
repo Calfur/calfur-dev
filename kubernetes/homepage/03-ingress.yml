@@ -9,8 +9,21 @@ spec:
   routes:
     - match: Host(`calfur.dev`)
       kind: Rule
+      middlewares:
+        - name: hsts-header-homepage
+      services:
+        - name: homepage
+          port: 80
+    - match: Host(`www.calfur.dev`)
+      kind: Rule
+      middlewares:
+        - name: redirect-www-to-root-homepage
       services:
         - name: homepage
           port: 80
   tls:
-    certResolver: myresolver 
+    certResolver: myresolver
+    domains:
+      - main: calfur.dev
+        sans:
+          - www.calfur.dev 

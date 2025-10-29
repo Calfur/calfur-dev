@@ -1,4 +1,5 @@
 resources:
+  - 00-middlewares.yml
   - 01-service.yml
   - 02-deployment.yml
   - 03-ingress.yml 

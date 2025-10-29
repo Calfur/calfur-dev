@@ -1,0 +1,20 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  namespace: default
+  name: redirect-www-to-root-homepage
+spec:
+  redirectRegex:
+    regex: ^https?://www\.calfur\.dev/(.*)
+    replacement: https://calfur.dev/$1
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  namespace: default
+  name: hsts-header-homepage
+spec:
+  headers:
+    customResponseHeaders:
+      Strict-Transport-Security: "max-age=31536000; includeSubDomains; preload"
