@@ -12,5 +12,16 @@ spec:
       services:
         - name: jetski
           port: 80
+    - match: Host(`www.jetski.calfur.dev`)
+      kind: Rule
+      middlewares:
+        - name: redirect-www-to-root-jetski
+      services:
+        - name: jetski
+          port: 80
   tls:
     certResolver: myresolver
+    domains:
+      - main: jetski.calfur.dev
+        sans:
+          - www.jetski.calfur.dev

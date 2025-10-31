@@ -1,0 +1,11 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  namespace: default
+  name: redirect-www-to-root-jetski
+spec:
+  redirectRegex:
+    regex: ^https?://www\.jetski\.calfur\.dev/(.*)
+    replacement: https://jetski.calfur.dev/$1
+    permanent: true
+
