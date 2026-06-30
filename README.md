@@ -43,11 +43,35 @@ The https certificate setup is based on this guide: https://doc.traefik.io/traef
 
 https://docs.k3s.io/quick-start
 
-curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik" sh -s -
+Make sure the host uses cgroup v2 before installing/upgrading K3s:
+
+- `cat /proc/cmdline`
+- `stat -fc %T /sys/fs/cgroup` (should be `cgroup2fs`)
+- if needed, set kernel args in `/etc/default/grub`: `systemd.unified_cgroup_hierarchy=1 cgroup_no_v1=all`, then run `sudo update-grub` and reboot
+
+Install K3s (keep Traefik disabled because it is managed by this repository):
+
+- `curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik" sh -s -`
 
 #### Run the GitHub Action
 
 Make sure the secrets SERVER_IP, SERVER_USER and SSH_PRIVATE_KEY are configured correctly.
+
+#### Keep K3s healthy
+
+- If deploy fails with `the server has asked for the client to provide credentials`:
+  - admin certificate is likely expired (happens once a year)
+  - `sudo systemctl restart k3s`
+- Check version:
+  - `k3s --version`
+- Upgrade carefully:
+  - keep `--disable traefik` on upgrades
+  - example: `curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --disable traefik" sh -s -`
+- Validate after upgrade:
+  - `sudo systemctl is-active k3s`
+  - `kubectl get nodes -o wide`
+  - `kubectl get pods -A`
+  - `k3s certificate check --output table`
 
 #### Enable temporary port forwarding to create the first https certificate
 
