@@ -20,7 +20,7 @@ spec:
         - name: ghcr-secret
       containers:
         - name: stellar-frontline
-          image: ghcr.io/calfur/stellar-frontline:9550e8e55d80f749dee69e232c26b606e1a0c164
+          image: ghcr.io/calfur/stellar-frontline:2c6897729f76b71cb594d1027b7e5ad01087bace
           ports:
             - name: web
               containerPort: 3000
