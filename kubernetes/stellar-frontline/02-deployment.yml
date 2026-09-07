@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: stellar-frontline
+  labels:
+    app: stellar-frontline
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stellar-frontline
+  template:
+    metadata:
+      labels:
+        app: stellar-frontline
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: stellar-frontline
+          image: ghcr.io/calfur/stellar-frontline:latest
+          ports:
+            - name: web
+              containerPort: 3000
+          env:
+            - name: TELEGRAM_BOT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: stellar-frontline-telegram
+                  key: bot-token
+            - name: TELEGRAM_CHAT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: stellar-frontline-telegram
+                  key: chat-id
+            - name: PORT
+              value: "3000"
