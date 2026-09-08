@@ -19,6 +19,9 @@ on:
 jobs:
   update-image:
     runs-on: ubuntu-latest
+    concurrency:
+      group: update-image-${{ inputs.file_path }}
+      cancel-in-progress: true
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
