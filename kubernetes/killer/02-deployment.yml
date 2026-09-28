@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: killer
-          image: ghcr.io/calfur/killer:0a150e27ee10230e2a436a111efa70af68da47d4
+          image: ghcr.io/calfur/killer:18f54365235ab1d79b0ef4dcd61c0640c05b9dfd
           ports:
             - name: web
               containerPort: 5000
