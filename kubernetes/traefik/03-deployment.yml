@@ -15,17 +15,72 @@ spec:
     metadata:
       labels:
         app: traefik
+        app.kubernetes.io/managed-by: calfur-dev
     spec:
       serviceAccountName: traefik-ingress-controller
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      initContainers:
+        # The existing ACME file is root-owned on the certificate PVC.
+        # Change only its ownership so the long-running controller can be non-root.
+        - name: certificate-permissions
+          image: traefik:v3.7.13
+          command: [sh, -ec]
+          args:
+            - |
+              chown 65532:65532 /data
+              if [ -f /data/acme.json ]; then
+                chown 65532:65532 /data/acme.json
+              fi
+          securityContext:
+            runAsNonRoot: false
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+              # DAC_OVERRIDE permits traversal if /data already belongs to 65532
+              # with mode 0700 on subsequent rollouts.
+              add: [CHOWN, DAC_OVERRIDE]
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+            - name: traefik-storage
+              mountPath: /data
       containers:
         - name: traefik
-          image: traefik:v3.0
+          image: traefik:v3.7.13
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+              ephemeral-storage: 256Mi
           args:
-            - --api.insecure
             - --accesslog
             - --entrypoints.web.Address=:8000
             - --entrypoints.websecure.Address=:4443
             - --providers.kubernetescrd
+            - --providers.kubernetescrd.namespaces=default
+            - --providers.kubernetescrd.disableclusterscoperesources=true
             - --certificatesresolvers.myresolver.acme.tlschallenge
             - --certificatesresolvers.myresolver.acme.email=$(TRAEFIK_ACME_EMAIL)
             - --certificatesresolvers.myresolver.acme.storage=/data/acme.json

@@ -14,11 +14,55 @@ spec:
   template:
     metadata:
       labels:
+        app.kubernetes.io/managed-by: calfur-dev
         app: star-wars-bild-countdown
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: star-wars-bild-countdown
           image: ghcr.io/calfur/star-wars-bild-countdown:fc173c382fccf304111b57bddb0a195da9adad4c
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+              # Existing Nginx configurations listen on port 80.
+              add: [NET_BIND_SERVICE]
+          resources:
+            requests:
+              cpu: 25m
+              memory: 32Mi
+              ephemeral-storage: 64Mi
+            limits:
+              cpu: "1"
+              memory: 128Mi
+              ephemeral-storage: 1Gi
+          command: [nginx]
+          args: ["-g", "daemon off;"]
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+            - name: nginx-run
+              mountPath: /var/run
           ports:
             - name: web
               containerPort: 80
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi
+        - name: nginx-cache
+          emptyDir:
+            sizeLimit: 128Mi
+        - name: nginx-run
+          emptyDir:
+            sizeLimit: 16Mi

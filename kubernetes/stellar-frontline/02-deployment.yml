@@ -14,13 +14,39 @@ spec:
   template:
     metadata:
       labels:
+        app.kubernetes.io/managed-by: calfur-dev
         app: stellar-frontline
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
       imagePullSecrets:
         - name: ghcr-secret
       containers:
         - name: stellar-frontline
           image: ghcr.io/calfur/stellar-frontline:0c126ac10ce7e7d12ae25133eb5a937f5b33043d
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+              ephemeral-storage: 64Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+              ephemeral-storage: 1Gi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
           ports:
             - name: web
               containerPort: 3000
@@ -37,3 +63,7 @@ spec:
                   key: chat-id
             - name: PORT
               value: "3000"
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi

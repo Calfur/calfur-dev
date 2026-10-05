@@ -14,14 +14,49 @@ spec:
   template:
     metadata:
       labels:
+        app.kubernetes.io/managed-by: calfur-dev
         app: prometheus
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: prometheus
           image: prom/prometheus:v3.3.1
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+              ephemeral-storage: 128Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+              ephemeral-storage: 2Gi
+          volumeMounts:
+            - name: data
+              mountPath: /prometheus
+            - name: tmp
+              mountPath: /tmp
           ports:
             - name: web
               containerPort: 9090
+      volumes:
+        - name: data
+          emptyDir:
+            sizeLimit: 1Gi
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -39,19 +74,47 @@ spec:
   template:
     metadata:
       labels:
+        app.kubernetes.io/managed-by: calfur-dev
         app: grafana
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 472
+        runAsGroup: 472
+        fsGroup: 472
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: grafana
-          image: grafana/grafana:11.6.1
+          image: grafana/grafana:13.2.3
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+              ephemeral-storage: 128Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+              ephemeral-storage: 2Gi
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/grafana
+            - name: tmp
+              mountPath: /tmp
           ports:
             - name: web
               containerPort: 3000
           env:
+            - name: GF_LOG_MODE
+              value: console
             - name: GF_AUTH_ANONYMOUS_ENABLED
-              value: "true"
-            - name: GF_AUTH_ANONYMOUS_ORG_ROLE
-              value: "Viewer"
+              value: "false"
             - name: GF_USERS_ALLOW_SIGN_UP
               value: "false"
             - name: GF_SECURITY_ADMIN_USER
@@ -61,3 +124,10 @@ spec:
                 secretKeyRef:
                   name: grafana-admin-credentials
                   key: password
+      volumes:
+        - name: data
+          emptyDir:
+            sizeLimit: 1Gi
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi

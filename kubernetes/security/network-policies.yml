@@ -1,0 +1,222 @@
+# Select only this repository's pods, including future Party Battle versions.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: default
+  name: calfur-default-deny
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/managed-by: calfur-dev
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: default
+  name: calfur-dns
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/managed-by: calfur-dev
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+---
+# Permit external web dependencies while blocking private networks and metadata.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: default
+  name: calfur-public-web
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/managed-by: calfur-dev
+    matchExpressions:
+      - key: app
+        operator: NotIn
+        values: [prometheus]
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 0.0.0.0/8
+              - 10.0.0.0/8
+              - 127.0.0.0/8
+              - 169.254.0.0/16
+              - 172.16.0.0/12
+              - 192.168.0.0/16
+              - 224.0.0.0/4
+        - ipBlock:
+            cidr: ::/0
+            except:
+              - ::/128
+              - ::1/128
+              - ::ffff:0:0/96
+              - fc00::/7
+              - fe80::/10
+              - ff00::/8
+      ports:
+        - protocol: TCP
+          port: 80
+        - protocol: TCP
+          port: 443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: default
+  name: calfur-web-ingress
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/managed-by: calfur-dev
+    matchExpressions:
+      - key: app
+        operator: NotIn
+        values: [traefik, prometheus]
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: traefik
+              app.kubernetes.io/managed-by: calfur-dev
+      ports:
+        - protocol: TCP
+          port: web
+        - protocol: TCP
+          port: api
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: default
+  name: calfur-traefik
+spec:
+  podSelector:
+    matchLabels:
+      app: traefik
+      app.kubernetes.io/managed-by: calfur-dev
+  policyTypes: [Ingress, Egress]
+  ingress:
+    # Public Service/LoadBalancer traffic, including ACME TLS challenges.
+    - ports:
+        - protocol: TCP
+          port: 8000
+        - protocol: TCP
+          port: 4443
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/managed-by: calfur-dev
+            matchExpressions:
+              - key: app
+                operator: NotIn
+                values: [traefik, prometheus]
+      ports:
+        - protocol: TCP
+          port: web
+        - protocol: TCP
+          port: api
+    # The Kubernetes Service is 443 and k3s's API endpoint is 6443.
+    # Both ports cover policy enforcement before/after Service DNAT.
+    # Only Traefik needs this exception; it also retains its API token.
+    - ports:
+        - protocol: TCP
+          port: 443
+        - protocol: TCP
+          port: 6443
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: default
+  name: calfur-grafana-to-prometheus
+spec:
+  podSelector:
+    matchLabels:
+      app: grafana
+      app.kubernetes.io/managed-by: calfur-dev
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              app: prometheus
+              app.kubernetes.io/managed-by: calfur-dev
+      ports:
+        - protocol: TCP
+          port: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: default
+  name: calfur-prometheus
+spec:
+  podSelector:
+    matchLabels:
+      app: prometheus
+      app.kubernetes.io/managed-by: calfur-dev
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app: grafana
+              app.kubernetes.io/managed-by: calfur-dev
+      ports:
+        - protocol: TCP
+          port: 9090
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: default
+  name: calfur-arctic-smtp
+spec:
+  podSelector:
+    matchLabels:
+      app: arctic-kaelte-homepage
+      app.kubernetes.io/managed-by: calfur-dev
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              - 0.0.0.0/8
+              - 10.0.0.0/8
+              - 127.0.0.0/8
+              - 169.254.0.0/16
+              - 172.16.0.0/12
+              - 192.168.0.0/16
+              - 224.0.0.0/4
+        - ipBlock:
+            cidr: ::/0
+            except:
+              - ::/128
+              - ::1/128
+              - ::ffff:0:0/96
+              - fc00::/7
+              - fe80::/10
+              - ff00::/8
+      ports:
+        - protocol: TCP
+          port: 587

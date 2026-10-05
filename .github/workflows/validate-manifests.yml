@@ -1,0 +1,32 @@
+name: Validate Kubernetes manifests
+
+on:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned validation tools
+        run: |
+          set -euo pipefail
+          python -m pip install PyYAML==6.0.3
+          mkdir -p "$RUNNER_TEMP/manifest-tools"
+          cd "$RUNNER_TEMP/manifest-tools"
+          curl -fsSL -o kustomize.tar.gz https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.8.1/kustomize_v5.8.1_linux_amd64.tar.gz
+          echo '029a7f0f4e1932c52a0476cf02a0fd855c0bb85694b82c338fc648dcb53a819d  kustomize.tar.gz' | sha256sum -c -
+          tar -xzf kustomize.tar.gz kustomize
+          curl -fsSL -o kubeconform.tar.gz https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz
+          echo 'c31518ddd122663b3f3aa874cfe8178cb0988de944f29c74a0b9260920d115d3  kubeconform.tar.gz' | sha256sum -c -
+          tar -xzf kubeconform.tar.gz kubeconform
+          echo "$RUNNER_TEMP/manifest-tools" >> "$GITHUB_PATH"
+      - name: Validate schemas, workload restrictions and traffic paths
+        run: python scripts/validate_manifests.py

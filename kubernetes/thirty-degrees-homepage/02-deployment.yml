@@ -14,13 +14,48 @@ spec:
   template:
     metadata:
       labels:
+        app.kubernetes.io/managed-by: calfur-dev
         app: thirty-degrees-homepage
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: thirty-degrees-homepage
           image: ghcr.io/thirty-degrees/homepage:b84b26440a4d129266b0bbb409c3cfa64bf7f758
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+              ephemeral-storage: 64Mi
+            limits:
+              cpu: "1"
+              memory: 768Mi
+              ephemeral-storage: 1Gi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: next-cache
+              mountPath: /app/.next/cache
           ports:
             - name: web
               containerPort: 3000 
       imagePullSecrets:
         - name: ghcr-secret
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi
+        - name: next-cache
+          emptyDir:
+            sizeLimit: 512Mi
