@@ -24,6 +24,9 @@ spec:
             - --api.insecure
             - --accesslog
             - --entrypoints.web.Address=:8000
+            - --entrypoints.web.http.redirections.entrypoint.to=:443
+            - --entrypoints.web.http.redirections.entrypoint.scheme=https
+            - --entrypoints.web.http.redirections.entrypoint.permanent=true
             - --entrypoints.websecure.Address=:4443
             - --providers.kubernetescrd
             - --certificatesresolvers.myresolver.acme.tlschallenge

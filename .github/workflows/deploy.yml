@@ -71,6 +71,7 @@ jobs:
 
           echo "Applying Kubernetes manifests"
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/traefik
+          kubectl -n default rollout status deployment/traefik --timeout=120s
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/pannenstreifen
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/q-swiper
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/balloon-race
