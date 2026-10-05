@@ -108,6 +108,12 @@ Delete unused images:
 -   SSH with private key & password
 -   Termius or Terminal with credentials from KeePass
 
+### Open Traefik Dashboard
+
+- Traefik dashboard (requires `--api.insecure`): on the server, run `kubectl -n default port-forward deployment/traefik 8080:8080`.
+- On your computer, open an SSH tunnel: `ssh -N -L 8080:127.0.0.1:8080 root@calfur-001` (use your server's SSH credentials and port).
+- Keep both commands running and open [the Traefik dashboard](http://localhost:8080/dashboard/) in your browser.
+
 ### Useful commands
 
 - docker build -t nginx-calfur-dev .
