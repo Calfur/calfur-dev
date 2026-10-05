@@ -19,7 +19,9 @@ jobs:
 
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
+      with:
+        persist-credentials: false
 
     - name: Copy Kubernetes manifests to the server
       uses: appleboy/scp-action@v0.1.7
