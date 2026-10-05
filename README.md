@@ -131,7 +131,8 @@ in `default` that are no longer declared. Storage, Secrets, CRDs and RBAC are re
 
 #### Debug:
 
-- kubectl get pods --all-namespaces
+- kubectl get pods --all-namespaces\
+  -L app.kubernetes.io/part-of
 - kubectl logs traefik-b5965ccd-wdklg
 - cd ../letsencrypt/
 - kubectl delete pods --all
