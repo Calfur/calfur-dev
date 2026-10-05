@@ -1,0 +1,44 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  namespace: default
+  name: arctic-kaelte-homepage-https
+spec:
+  entryPoints: [websecure]
+  routes:
+    - match: Host(`arctic-kaelte.ch`)
+      kind: Rule
+      middlewares:
+        - name: arctic-security-headers
+      services:
+        - name: arctic-kaelte-homepage
+          port: 80
+    - match: Host(`www.arctic-kaelte.ch`)
+      kind: Rule
+      middlewares:
+        - name: arctic-redirect-www
+      services:
+        - name: arctic-kaelte-homepage
+          port: 80
+  tls:
+    certResolver: myresolver
+    domains:
+      - main: arctic-kaelte.ch
+        sans: [www.arctic-kaelte.ch]
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  namespace: default
+  name: arctic-kaelte-homepage-http
+spec:
+  entryPoints: [web]
+  routes:
+    - match: Host(`arctic-kaelte.ch`) || Host(`www.arctic-kaelte.ch`)
+      kind: Rule
+      middlewares:
+        - name: arctic-redirect-www
+        - name: arctic-redirect-https
+      services:
+        - name: arctic-kaelte-homepage
+          port: 80

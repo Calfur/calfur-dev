@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default
+  name: arctic-kaelte-homepage
+  labels:
+    app: arctic-kaelte-homepage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arctic-kaelte-homepage
+  template:
+    metadata:
+      labels:
+        app: arctic-kaelte-homepage
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: arctic-kaelte-homepage
+          # Bootstrap tag; repository dispatch replaces this with the immutable commit SHA.
+          image: ghcr.io/arctic-kaelte/homepage:latest
+          imagePullPolicy: Always
+          ports:
+            - name: web
+              containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: APP_ORIGIN
+              value: https://arctic-kaelte.ch
+            - name: TRUST_PROXY
+              value: "true"
+            - name: SMTP_HOST
+              value: smtp-relay.gmail.com
+            - name: SMTP_PORT
+              value: "587"
+            - name: SMTP_HELO_NAME
+              value: arctic-kaelte.ch
+            - name: SMTP_ENABLED
+              value: "true"
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: web
+            initialDelaySeconds: 2
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: web
+            initialDelaySeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]

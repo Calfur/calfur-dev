@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: default
+  name: arctic-kaelte-homepage
+spec:
+  ports:
+    - name: web
+      port: 80
+      targetPort: 3000
+  selector:
+    app: arctic-kaelte-homepage
