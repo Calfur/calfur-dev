@@ -1,5 +1,0 @@
----
-alwaysApply: true
----
-
-The K3s cluster runs on the remote server `calfur-001`. Use `kubectl kustomize` locally to render manifests without contacting a cluster. Run cluster inspection and authorized migration commands over `ssh calfur-001`; do not assume a local kubectl context points to this server. Regular deployments run through `.github/workflows/deploy.yml`. Repository-wide pruning must use the complete `kubernetes/kustomization.yaml` inventory, the repository ownership selector, and the explicit resource-kind allowlist in that workflow.

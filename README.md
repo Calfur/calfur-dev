@@ -105,30 +105,11 @@ Delete unused images:
 
 ### Resource ownership and cleanup
 
-`kubernetes/kustomization.yaml` is the complete desired inventory. Add a new
-application directory there; remove its entry when retiring the application.
-Each application's Kustomization adds two metadata labels:
-
-- `app.kubernetes.io/part-of`: the application name (for example, `party-battle`).
-- `calfur.dev/managed-by: calfur-dev`: resources managed by this repository.
-
-Both labels use `includeSelectors: false` and `includeTemplates: false`.
-Deployment and Service selectors continue to use the existing `app` labels.
-Ownership labels therefore do not change Pod selection or trigger Pod restarts.
-Party Battle's generated backend versions inherit ownership from the application
-Kustomization.
-
-Deployment applies Traefik prerequisites first, applies the complete inventory,
-and waits for the repository's Deployments to finish rolling out. It then prunes
-previously applied resources with the repository ownership label that are absent
-from the inventory. Cleanup is restricted to Deployments, Services, IngressRoutes,
-and Middlewares in `default`. Secrets, storage, CRDs, and RBAC resources are not
-automatically deleted.
-
-Do not run repository-wide pruning against an individual application directory:
-the other applications would be missing from that desired inventory. Resources
-removed before ownership labels were introduced need an explicit one-time review
-and adoption before pruning can discover them. Unlabeled resources are left alone.
+Maintain application entries in `kubernetes/kustomization.yaml`. Labels identify
+the application (`app.kubernetes.io/part-of`) and repository ownership
+(`calfur.dev/managed-by: calfur-dev`). After workloads are healthy, deployment
+automatically removes owned Deployments, Services, IngressRoutes and Middlewares
+in `default` that are no longer declared. Storage, Secrets, CRDs and RBAC are retained.
 
 ### Connect to server
 
