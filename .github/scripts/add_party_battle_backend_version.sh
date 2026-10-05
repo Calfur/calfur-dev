@@ -16,10 +16,6 @@ SVC="party-battle-backend-v$(echo "${BACKEND_VERSION}" | tr '.' '-')"
 mkdir -p "${DIR}"
 
 cat > "${DIR}/kustomization.yaml" <<EOF
-labels:
-  - includeSelectors: true
-    pairs:
-      app.kubernetes.io/part-of: party-battle
 resources:
   - 01-service.yml
   - 02-deployment.yml
@@ -79,8 +75,6 @@ kind: IngressRoute
 metadata:
   namespace: default
   name: __INGRESS_NAME__
-  labels:
-    app.kubernetes.io/part-of: party-battle
 spec:
   entryPoints:
     - websecure

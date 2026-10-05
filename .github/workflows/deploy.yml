@@ -43,7 +43,7 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         fingerprint: ${{ secrets.SERVER_FINGERPRINT }}
         script: |
-          set -e
+          set -eu
 
           echo "Creating Docker registry secret"
           kubectl create secret docker-registry ghcr-secret \
@@ -69,24 +69,21 @@ jobs:
             --from-literal=chat-id=${{ secrets.STELLAR_FRONTLINE_TELEGRAM_CHAT_ID }} \
             --dry-run=client -o yaml | kubectl apply -f -
 
-          echo "Applying Kubernetes manifests"
+          echo "Applying Traefik prerequisites"
           kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/traefik
           kubectl -n default rollout status deployment/traefik --timeout=120s
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/pannenstreifen
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/q-swiper
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/balloon-race
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/killer
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/fondueplausch
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/volleyballnacht
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/star-wars-bild-countdown
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/metrics
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/jetski
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/homepage
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/thirty-degrees-homepage
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/stellar-frontline
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/arctic-kaelte-homepage
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/party-battle --prune -l app.kubernetes.io/part-of=party-battle --prune-allowlist=apps/v1/Deployment --prune-allowlist=core/v1/Service --prune-allowlist=traefik.io/v1alpha1/IngressRoute --prune-allowlist=traefik.io/v1alpha1/Middleware
-          kubectl apply -k ${{ env.DEPLOY_PATH }}/kubernetes/watermark-webapp --prune -l app.kubernetes.io/part-of=watermark-webapp --prune-allowlist=apps/v1/Deployment --prune-allowlist=core/v1/Service --prune-allowlist=traefik.io/v1alpha1/IngressRoute --prune-allowlist=traefik.io/v1alpha1/Middleware
+
+          echo "Applying the complete repository inventory"
+          kubectl -n default apply -k ${{ env.DEPLOY_PATH }}/kubernetes
+          kubectl -n default rollout status deployment -l calfur.dev/managed-by=calfur-dev --timeout=180s
+
+          echo "Pruning removed repository resources after workloads are healthy"
+          kubectl -n default apply -k ${{ env.DEPLOY_PATH }}/kubernetes \
+            --prune -l calfur.dev/managed-by=calfur-dev \
+            --prune-allowlist=apps/v1/Deployment \
+            --prune-allowlist=core/v1/Service \
+            --prune-allowlist=traefik.io/v1alpha1/IngressRoute \
+            --prune-allowlist=traefik.io/v1alpha1/Middleware
 
           echo "Cleaning up"
           rm -rf ${{ env.DEPLOY_PATH }}

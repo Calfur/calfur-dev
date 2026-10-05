@@ -1,0 +1,18 @@
+# Complete desired inventory for repository-wide pruning.
+resources:
+  - arctic-kaelte-homepage/
+  - balloon-race/
+  - fondueplausch/
+  - homepage/
+  - jetski/
+  - killer/
+  - metrics/
+  - pannenstreifen/
+  - party-battle/
+  - q-swiper/
+  - star-wars-bild-countdown/
+  - stellar-frontline/
+  - thirty-degrees-homepage/
+  - traefik/
+  - volleyballnacht/
+  - watermark-webapp/

@@ -1,3 +1,9 @@
+labels:
+  - includeSelectors: false
+    includeTemplates: false
+    pairs:
+      app.kubernetes.io/part-of: party-battle
+      calfur.dev/managed-by: calfur-dev
 resources:
   - frontend/
   - backend/

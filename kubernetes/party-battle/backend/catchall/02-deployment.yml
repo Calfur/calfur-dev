@@ -15,7 +15,6 @@ spec:
     metadata:
       labels:
         app: party-battle-backend-catchall
-        app.kubernetes.io/part-of: party-battle
     spec:
       containers:
         - name: party-battle-backend

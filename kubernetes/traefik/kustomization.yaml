@@ -1,3 +1,9 @@
+labels:
+  - includeSelectors: false
+    includeTemplates: false
+    pairs:
+      app.kubernetes.io/part-of: traefik
+      calfur.dev/managed-by: calfur-dev
 resources:
   - ./external/kubernetes-crd-definition-v1.yml
   - ./external/kubernetes-crd-rbac.yml

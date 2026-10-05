@@ -1,3 +1,9 @@
+labels:
+  - includeSelectors: false
+    includeTemplates: false
+    pairs:
+      app.kubernetes.io/part-of: balloon-race
+      calfur.dev/managed-by: calfur-dev
 resources:
   - 01-service.yml
   - 02-deployment.yml
