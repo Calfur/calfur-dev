@@ -8,6 +8,12 @@ https://calfur.dev
 
 [![Deploy to Kubernetes (calfur-001)](https://github.com/Calfur/calfur-dev/actions/workflows/deploy.yml/badge.svg)](https://github.com/Calfur/calfur-dev/actions/workflows/deploy.yml)
 
+## Workload security
+
+Repository-managed workload controls, traffic allowances, compatibility exceptions,
+and rollout checks are documented in [kubernetes/security/README.md](kubernetes/security/README.md).
+PRs and deployment jobs validate rendered manifests before any server deployment.
+
 ## How to prepare a new server
 
 ### SSH

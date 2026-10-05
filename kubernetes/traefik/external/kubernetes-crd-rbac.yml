@@ -1,38 +1,17 @@
+# Scoped to the only namespace watched by this repository's CRD provider.
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
+  namespace: default
   name: traefik-ingress-controller
-
 rules:
-  - apiGroups:
-      - ""
-    resources:
-      - services
-      - endpoints
-      - secrets
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - extensions
-      - networking.k8s.io
-    resources:
-      - ingresses
-      - ingressclasses
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - extensions
-      - networking.k8s.io
-    resources:
-      - ingresses/status
-    verbs:
-      - update
-  - apiGroups:
-      - traefik.io
+  - apiGroups: [""]
+    resources: [services, secrets, configmaps]
+    verbs: [get, list, watch]
+  - apiGroups: [discovery.k8s.io]
+    resources: [endpointslices]
+    verbs: [list, watch]
+  - apiGroups: [traefik.io]
     resources:
       - middlewares
       - middlewaretcps
@@ -44,20 +23,16 @@ rules:
       - tlsstores
       - serverstransports
       - serverstransporttcps
-    verbs:
-      - get
-      - list
-      - watch
-
+    verbs: [get, list, watch]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
+  namespace: default
   name: traefik-ingress-controller
-
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
+  kind: Role
   name: traefik-ingress-controller
 subjects:
   - kind: ServiceAccount

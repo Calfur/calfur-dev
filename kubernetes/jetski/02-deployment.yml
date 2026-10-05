@@ -14,11 +14,46 @@ spec:
   template:
     metadata:
       labels:
+        app.kubernetes.io/managed-by: calfur-dev
         app: jetski
     spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: jetski
           image: ghcr.io/calfur/jetski:a59e78615a452988d1097eddfd94652f16e18f05
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: [ALL]
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+              ephemeral-storage: 64Mi
+            limits:
+              cpu: "1"
+              memory: 768Mi
+              ephemeral-storage: 1Gi
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: next-cache
+              mountPath: /app/.next/cache
           ports:
             - name: web
               containerPort: 3000
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 128Mi
+        - name: next-cache
+          emptyDir:
+            sizeLimit: 512Mi
