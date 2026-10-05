@@ -1,5 +1,7 @@
-commonLabels:
-  app.kubernetes.io/part-of: watermark-webapp
+labels:
+  - includeSelectors: true
+    pairs:
+      app.kubernetes.io/part-of: watermark-webapp
 resources:
   - 00-middlewares.yml
   - 01-service.yml
