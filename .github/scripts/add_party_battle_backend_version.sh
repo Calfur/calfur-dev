@@ -58,6 +58,7 @@ spec:
       labels:
         app: ${SVC}
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: party-battle-backend
           image: ghcr.io/thirty-degrees/backend-party-battle:${IMAGE_VERSION}

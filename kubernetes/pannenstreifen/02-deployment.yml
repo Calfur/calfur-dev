@@ -16,6 +16,7 @@ spec:
       labels:
         app: pannenstreifen-website
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: pannenstreifen-website
           image: ghcr.io/calfur/pannenstreifen-website:c45b6dbfcdd9816f81850dd0a41bc8cd2c0d60e1

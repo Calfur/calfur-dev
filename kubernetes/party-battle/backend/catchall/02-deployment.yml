@@ -16,6 +16,7 @@ spec:
       labels:
         app: party-battle-backend-catchall
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: party-battle-backend
           image: ghcr.io/thirty-degrees/api-version-unsupported-colyseus:f2d133dacfc380140d905ef6bada572770802ff9

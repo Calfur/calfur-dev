@@ -16,6 +16,7 @@ spec:
       labels:
         app: watermark-webapp
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: watermark-webapp
           image: ghcr.io/thirty-degrees/watermark-webapp:4f6e3876019589b8473da1e2f7e579293d38f8e5

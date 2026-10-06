@@ -16,6 +16,7 @@ spec:
       labels:
         app: party-battle-frontend
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: party-battle-frontend
           image: ghcr.io/thirty-degrees/frontend-party-battle-web:63cb0eee03283f0728b09516eaa027e6a118f696

@@ -16,6 +16,7 @@ spec:
       labels:
         app: jetski
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: jetski
           image: ghcr.io/calfur/jetski:a59e78615a452988d1097eddfd94652f16e18f05

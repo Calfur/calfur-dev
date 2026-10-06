@@ -16,6 +16,7 @@ spec:
       labels:
         app: thirty-degrees-homepage
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: thirty-degrees-homepage
           image: ghcr.io/thirty-degrees/homepage:b84b26440a4d129266b0bbb409c3cfa64bf7f758

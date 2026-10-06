@@ -16,6 +16,7 @@ spec:
       labels:
         app: killer
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: killer
           image: ghcr.io/calfur/killer:baed0632105945e40165e9d41fb9e48427aff0c6

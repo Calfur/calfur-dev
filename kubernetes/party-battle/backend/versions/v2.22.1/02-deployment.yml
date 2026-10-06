@@ -16,6 +16,7 @@ spec:
       labels:
         app: party-battle-backend-v2-22-1
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: party-battle-backend
           image: ghcr.io/thirty-degrees/backend-party-battle:63cb0eee03283f0728b09516eaa027e6a118f696

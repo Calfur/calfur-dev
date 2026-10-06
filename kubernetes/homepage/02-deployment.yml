@@ -16,6 +16,7 @@ spec:
       labels:
         app: homepage
     spec:
+      automountServiceAccountToken: false
       containers:
         - name: homepage
           image: ghcr.io/calfur/homepage:a5c25013ec48398c6db7880895bad65c945c4cb0
