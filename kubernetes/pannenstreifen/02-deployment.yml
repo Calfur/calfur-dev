@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: pannenstreifen-website
-          image: ghcr.io/calfur/pannenstreifen-website:c45b6dbfcdd9816f81850dd0a41bc8cd2c0d60e1
+          image: ghcr.io/calfur/pannenstreifen-website:616891e44706b5d77438535ee52881462ab737be
           ports:
             - name: web
               containerPort: 80
