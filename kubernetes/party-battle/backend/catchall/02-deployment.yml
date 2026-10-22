@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: party-battle-backend
-          image: ghcr.io/thirty-degrees/api-version-unsupported-colyseus:0cde7761e79b08ebe6d98ee6375ad4913a140c90
+          image: ghcr.io/thirty-degrees/api-version-unsupported-colyseus:54598ccce148549808586e9735baa9e4d93d7a56
           ports:
             - name: api
               containerPort: 80
