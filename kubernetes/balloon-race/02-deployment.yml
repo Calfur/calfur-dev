@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: balloon-race
-          image: ghcr.io/calfur/balloon-race:351d055f40da9e3e256d28a0b6d18239210a077e
+          image: ghcr.io/calfur/balloon-race:80078df65b8be442ae427799b3766bad967958e8
           ports:
             - name: web
               containerPort: 80
