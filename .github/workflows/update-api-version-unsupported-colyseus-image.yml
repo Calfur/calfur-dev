@@ -1,0 +1,17 @@
+name: Update Party Battle Fallback Image
+
+on:
+  repository_dispatch:
+    types: [new-api-version-unsupported-colyseus-image]
+
+permissions:
+  contents: write
+
+jobs:
+  call-template:
+    uses: ./.github/workflows/update-image-template.yml
+    with:
+      image_version: ${{ github.event.client_payload.image_version }}
+      image_name: ghcr.io/thirty-degrees/api-version-unsupported-colyseus
+      file_path: ./kubernetes/party-battle/backend/catchall/02-deployment.yml
+      trigger_deploy: true
