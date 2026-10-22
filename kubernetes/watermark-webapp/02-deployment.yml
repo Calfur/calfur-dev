@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: watermark-webapp
-          image: ghcr.io/thirty-degrees/watermark-webapp:4f6e3876019589b8473da1e2f7e579293d38f8e5
+          image: ghcr.io/thirty-degrees/watermark-webapp:0b9b33f0425bc312bdaf1d6156c496924cc65d36
           imagePullPolicy: Always
           ports:
             - name: web
