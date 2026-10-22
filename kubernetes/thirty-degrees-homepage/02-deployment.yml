@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: thirty-degrees-homepage
-          image: ghcr.io/thirty-degrees/homepage:b84b26440a4d129266b0bbb409c3cfa64bf7f758
+          image: ghcr.io/thirty-degrees/homepage:6c9de26a9b495465fa6dc867a70feaae9932ec4a
           ports:
             - name: web
               containerPort: 3000 
