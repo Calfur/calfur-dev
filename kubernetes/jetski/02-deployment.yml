@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: jetski
-          image: ghcr.io/calfur/jetski:a59e78615a452988d1097eddfd94652f16e18f05
+          image: ghcr.io/calfur/jetski:8bc59b35fd3eeb539751cc4b03968b8c61dd9424
           ports:
             - name: web
               containerPort: 3000
