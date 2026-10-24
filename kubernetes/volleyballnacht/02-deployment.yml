@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: volleyballnacht
-          image: ghcr.io/jubla-nz/volleyball-nacht:9600c619f532ca6b4eb994203b6865baa47c99ff
+          image: ghcr.io/jubla-nz/volleyball-nacht:a88114051f91f8c47a27a61dad89b05654602b41
           ports:
             - name: web
               containerPort: 80
