@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: killer
-          image: ghcr.io/calfur/killer:00983b92f4480d7a869ed84dc93e822d684d7af9
+          image: ghcr.io/calfur/killer:f2904a41ebe390e5f34d71c754cd2842d2753a84
           ports:
             - name: web
               containerPort: 5000
