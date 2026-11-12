@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: fondueplausch
-          image: ghcr.io/jubla-nz/fondue-plausch:63ee36f39a50745a9d7a1eb054bd79131f2bc960
+          image: ghcr.io/jubla-nz/fondue-plausch:0884b66781a9a467bb93e7f963343b329ec9748b
           ports:
             - name: web
               containerPort: 80
