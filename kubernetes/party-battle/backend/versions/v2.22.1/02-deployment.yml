@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: party-battle-backend
-          image: ghcr.io/thirty-degrees/backend-party-battle:a54d07ffa0bc9aedb39427123da6067b84951727-39741548604-1
+          image: ghcr.io/thirty-degrees/backend-party-battle:a24841fc8c6b67cbb56d340ee5e3f118ac2d1f9b-43208504895-1
           ports:
             - name: api
               containerPort: 2567
