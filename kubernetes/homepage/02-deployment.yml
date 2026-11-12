@@ -19,7 +19,7 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: homepage
-          image: ghcr.io/calfur/homepage:35f6cdfa5374c3d32f2922ed1655eafedf488cd0
+          image: ghcr.io/calfur/homepage:ce9d5989d4e115c9d42506049b5810f5df565e6b
           ports:
             - name: web
               containerPort: 3000 
