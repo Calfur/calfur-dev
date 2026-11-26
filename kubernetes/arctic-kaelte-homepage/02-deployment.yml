@@ -27,7 +27,7 @@ spec:
       containers:
         - name: arctic-kaelte-homepage
           # Bootstrap tag; repository dispatch replaces this with the immutable commit SHA.
-          image: ghcr.io/arctic-kaelte/homepage:93e6e416cc6c68fc35dd48798a3ae92f431f49b2
+          image: ghcr.io/arctic-kaelte/homepage:df364ac03de7ca28dfd33c6f01f832561dafd939
           imagePullPolicy: Always
           ports:
             - name: web
