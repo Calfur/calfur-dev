@@ -9,6 +9,8 @@ spec:
   routes:
     - match: Host(`volleyballnacht.jubla-nz.ch`)
       kind: Rule
+      middlewares:
+        - name: hsts
       services:
         - name: volleyballnacht
           port: 80

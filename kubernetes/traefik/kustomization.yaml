@@ -11,3 +11,4 @@ resources:
   - 01-account.yml
   - 02-service.yml
   - 03-deployment.yml
+  - 04-middlewares.yml

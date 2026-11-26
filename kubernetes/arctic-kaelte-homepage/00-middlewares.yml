@@ -17,5 +17,7 @@ metadata:
 spec:
   headers:
     stsSeconds: 31536000
+    stsIncludeSubdomains: true
+    stsPreload: true
     contentTypeNosniff: true
     frameDeny: true

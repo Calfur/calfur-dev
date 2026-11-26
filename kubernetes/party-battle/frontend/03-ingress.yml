@@ -11,6 +11,8 @@ spec:
   routes:
     - match: Host(`party-battle.thirty-degrees.ch`)
       kind: Rule
+      middlewares:
+        - name: hsts
       priority: 1
       services:
         - name: party-battle-frontend

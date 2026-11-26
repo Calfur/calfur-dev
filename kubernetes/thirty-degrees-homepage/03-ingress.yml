@@ -9,6 +9,8 @@ spec:
   routes:
     - match: Host(`thirty-degrees.ch`)
       kind: Rule
+      middlewares:
+        - name: hsts
       services:
         - name: thirty-degrees-homepage
           port: 80

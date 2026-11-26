@@ -10,6 +10,8 @@ spec:
   routes:
     - match: Host(`fondueplausch.jubla-nz.ch`)
       kind: Rule
+      middlewares:
+        - name: hsts
       services:
         - name: fondueplausch
           port: 80
